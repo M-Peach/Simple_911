@@ -12,7 +12,7 @@ using Simple_911.Data;
 namespace Simple_911.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220201193619_Models")]
+    [Migration("20220201203352_Models")]
     partial class Models
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -263,9 +263,6 @@ namespace Simple_911.Data.Migrations
                     b.Property<string>("Note")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("TicketId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("UserId")
                         .IsRequired()

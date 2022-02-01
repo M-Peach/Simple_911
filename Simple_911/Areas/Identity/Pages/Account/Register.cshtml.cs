@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Simple_911.Models;
+using Simple_911.Services.Interfaces;
 
 namespace Simple_911.Areas.Identity.Pages.Account
 {
@@ -30,13 +31,16 @@ namespace Simple_911.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<SimpleUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ITRolesService _rolesService;
+        private ITRolesService roleService;
 
         public RegisterModel(
             UserManager<SimpleUser> userManager,
             IUserStore<SimpleUser> userStore,
             SignInManager<SimpleUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ITRolesService rolesService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +48,7 @@ namespace Simple_911.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _rolesService = rolesService;
         }
 
         /// <summary>
@@ -115,6 +120,8 @@ namespace Simple_911.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    await _rolesService.AddUserToRoleAsync(user, "Not Verified");
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);

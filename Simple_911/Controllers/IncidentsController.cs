@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -27,13 +28,23 @@ namespace Simple_911.Controllers
         }
 
         // GET: Incidents
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Incidents.Include(i => i.CallTaker).Include(i => i.Dispatcher).Include(i => i.PrimaryUnit).Include(i => i.Priority).Include(i => i.Status).Include(i => i.CallType);
             return View(await applicationDbContext.ToListAsync());
         }
 
+        //GET: DASHBOARD
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
+        public async Task<IActionResult> Dashboard()
+        {
+            var applicationDbContext = _context.Incidents.Include(i => i.CallTaker).Include(i => i.Dispatcher).Include(i => i.PrimaryUnit).Include(i => i.Priority).Include(i => i.Status).Include(i => i.CallType);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
         // GET: Incidents/Details/5
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker, Ground Unit")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -41,14 +52,8 @@ namespace Simple_911.Controllers
                 return NotFound();
             }
 
-            var incident = await _context.Incidents
-                .Include(i => i.CallTaker)
-                .Include(i => i.Dispatcher)
-                .Include(i => i.PrimaryUnit)
-                .Include(i => i.Priority)
-                .Include(i => i.Status)
-                .Include(i => i.CallType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Incident incident = await _incidentsService.GetIncidentByIdAsync(id.Value);
+
             if (incident == null)
             {
                 return NotFound();
@@ -58,6 +63,7 @@ namespace Simple_911.Controllers
         }
 
         // GET: Incidents/Create
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public IActionResult Create()
         {
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name");
@@ -70,6 +76,7 @@ namespace Simple_911.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> Create([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId")] Incident incident)
         {
             incident.DispatcherId = null;
@@ -90,10 +97,11 @@ namespace Simple_911.Controllers
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Dashboard));
         }
 
         // GET: Incidents/Edit/5
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -120,6 +128,7 @@ namespace Simple_911.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId")] Incident incident)
         {
             if (id != incident.Id)
@@ -155,6 +164,7 @@ namespace Simple_911.Controllers
         }
 
         // GET: DISPATCH
+        [Authorize(Roles = "Admin, Manager, Dispatcher")]
         public async Task<IActionResult> Dispatch(int id)
         {
             if (id == null)
@@ -179,6 +189,7 @@ namespace Simple_911.Controllers
         // POST: DISPATCH
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager, Dispatcher")]
         public async Task<IActionResult> Dispatch(int id, [Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId")] Incident incident)
         {
             if (id != incident.Id)
@@ -217,6 +228,26 @@ namespace Simple_911.Controllers
             ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
             ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
             return View(incident);
+        }
+
+        // INCIDENT NOTES
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
+        public async Task<IActionResult> AddIncidentNote([Bind("Id,IncidentId,Note,UserId")] IncidentNote incidentNote)
+        {
+            incidentNote.UserId = _userManager.GetUserId(User);
+            incidentNote.Created = DateTimeOffset.Now;
+
+
+            await _incidentsService.AddIncidentNoteAsync(incidentNote);
+
+            Incident incident = await _incidentsService.GetIncidentByIdAsync(incidentNote.IncidentId);
+
+            incident.Notes.Add(incidentNote);
+
+            return RedirectToAction("Details", new { id = incidentNote.IncidentId });
         }
 
         // GET: Incidents/Delete/5

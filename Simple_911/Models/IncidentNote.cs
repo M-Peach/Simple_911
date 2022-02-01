@@ -7,7 +7,7 @@ namespace Simple_911.Models
         public int Id { get; set; }
 
         [Display(Name = "Incident Id")]
-        public int TicketId { get; set; }
+        public int IncidentId { get; set; }
 
         [Display(Name = "Note")]
         public string Note { get; set; }

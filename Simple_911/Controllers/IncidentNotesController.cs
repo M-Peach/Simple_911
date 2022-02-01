@@ -23,7 +23,7 @@ namespace Simple_911.Controllers
         // GET: IncidentNotes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.IncidentNotes.Include(i => i.User);
+            var applicationDbContext = _context.IncidentNotes.Include(i => i.Incident).Include(i => i.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,6 +36,7 @@ namespace Simple_911.Controllers
             }
 
             var incidentNote = await _context.IncidentNotes
+                .Include(i => i.Incident)
                 .Include(i => i.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (incidentNote == null)
@@ -49,6 +50,7 @@ namespace Simple_911.Controllers
         // GET: IncidentNotes/Create
         public IActionResult Create()
         {
+            ViewData["IncidentId"] = new SelectList(_context.Incidents, "Id", "Address");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
@@ -58,7 +60,7 @@ namespace Simple_911.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TicketId,Note,Created,UserId")] IncidentNote incidentNote)
+        public async Task<IActionResult> Create([Bind("Id,IncidentId,Note,Created,UserId")] IncidentNote incidentNote)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +68,7 @@ namespace Simple_911.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["IncidentId"] = new SelectList(_context.Incidents, "Id", "Address", incidentNote.IncidentId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", incidentNote.UserId);
             return View(incidentNote);
         }
@@ -83,6 +86,7 @@ namespace Simple_911.Controllers
             {
                 return NotFound();
             }
+            ViewData["IncidentId"] = new SelectList(_context.Incidents, "Id", "Address", incidentNote.IncidentId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", incidentNote.UserId);
             return View(incidentNote);
         }
@@ -92,7 +96,7 @@ namespace Simple_911.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TicketId,Note,Created,UserId")] IncidentNote incidentNote)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,IncidentId,Note,Created,UserId")] IncidentNote incidentNote)
         {
             if (id != incidentNote.Id)
             {
@@ -119,6 +123,7 @@ namespace Simple_911.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["IncidentId"] = new SelectList(_context.Incidents, "Id", "Address", incidentNote.IncidentId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", incidentNote.UserId);
             return View(incidentNote);
         }
@@ -132,6 +137,7 @@ namespace Simple_911.Controllers
             }
 
             var incidentNote = await _context.IncidentNotes
+                .Include(i => i.Incident)
                 .Include(i => i.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (incidentNote == null)

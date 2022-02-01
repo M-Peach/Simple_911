@@ -1,19 +1,43 @@
 ﻿@model Simple_911.Models.Incident
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<SimpleUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
+    SimpleUser simpleUser = await UserManager.GetUserAsync(User);
 }
 
-<h1>Details</h1>
+
+    @if(Model.StatusId == 1)
+    {
+        <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 10%;"></div></div>
+}
+else if (@Model.StatusId == 2)
+{
+            <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div></div>
+}
+
+<input type="hidden" asp-for="PriorityId" />
 
 <div>
     <div classxfont-weighteighteightgetainer-fluid">
         <div class="row gy-2">
             <div class="col-md-12 col">
                 <div class="row col-cols-2 mt-5">
+                    @if (User.IsInRole("Dispactcher") || User.IsInRole("Call Taker") || User.IsInRole("Manager") || User.IsInRole("Admin"))
+                    {
                         <div style='text-align:right'>
-                            <a asp-action="Index"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
+                            <a asp-action="Index"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
                         </div>
+                    }
+                    else
+                    {
+                        <div style='text-align:right'>
+                            <a asp-action="Index"><button type="button" class="btn btn-primary">Back to List</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
+                        </div>
+                    }
                     <div class="card col m-1 p-2 border-primary mb-3">
                         <div class="card-body">
                             @*Incident Type*@
@@ -35,8 +59,15 @@
                                 <li><h6><strong>Date Created:</strong> <span class="">  @Model.Created.ToString("MMM dd - H:mm")</</span></h6></li>
                                 @*Call Taker*@
                                 <li><h6><strong>Call Taker:</strong> <span class="">  @Model.CallTaker.FullName</span></h6></li>
+                                @if(@Model.Dispatcher == null)
+                                {
+                                    
+                                }
+                                else
+                                {
                                 @*Dispatcher*@
                                 <li><h6><strong>Dispatcher:</strong> <span class="">  @Model.Dispatcher.FullName</span></h6></li>
+                                }
                             </ul>
                         </div>
                     </div>
@@ -44,4 +75,40 @@
             </div>
         </div>
     </div>
+</div>
+@*INCIDENT NOTES*@
+<div class="card text-white bg-primary mb-3">
+    <div class="card-header">Incident Notes:</div>
+        <div class="card-body">
+            <form asp-action="AddIncidentNote" asp-controller="Incidents" method="post">
+                <input type="hidden" asp-for="Id" name="IncidentId" />
+                @if(Model.DispatcherId == simpleUser.Id || Model.CallTakerId == simpleUser.Id)
+                {
+                <div class="form-group">
+                    <textarea asp-for="@(new IncidentNote().Note)" rows="4" class="form-control" required placeholder="Add Incident Note ..."></textarea>
+                </div>
+                <hr style="width:0%; text-align:left;margin-left:0">
+                    <button class="btn btn-warning text-black"><b>Submit</b></button>
+                <hr style="width:0%; text-align:left;margin-left:0">
+                }
+                else
+                {
+
+                }
+                </form>
+                @foreach(IncidentNote incidentNote in Model.Notes)
+                {
+                    <div>
+                    <span class="text-muted">
+                    @incidentNote.User.FullName - @incidentNote.User.UnitNumber
+                    <small class="float-right">(@incidentNote.Created.ToString("MM/dd/yy - H:mm"))</small>
+                    </span>
+                    <div>
+                    <h5><span class ="text-white"><b>@Html.Raw(incidentNote.Note)</b></span></h5>
+                    </div> 
+                    <hr>
+                    </div>
+                }
+        </div>
+    </div>    
 </div>

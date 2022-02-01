@@ -7,21 +7,6 @@
     SimpleUser simpleUser = await UserManager.GetUserAsync(User);
 }
 
-<h>Edit</h>
-
-<h4>Incident</h4>
-<hr />
-
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-
-
 <div>
     <div classxfont-weighteighteightgetainer-fluid">
         <div class="row gy-2">
@@ -74,6 +59,8 @@
                                 <li><h6><strong>Priority:</strong> <span class="">  @Model.Priority.Name</span></h6></li>
                                 @*Date Time*@
                                 <li><h6><strong>Date Created:</strong> <span class="">  @Model.Created.ToString("MMM dd - H:mm")</</span></h6></li>
+                                @*Callback Number*@
+                                <li><h6><strong>Callback Number:</strong> <span class="">  @Model.FormattedPhone</span></h6></li>
                                 @*Call Taker*@
                                 <li><h6><strong>Call Taker:</strong> <span class="">  @Model.CallTaker.FullName</span></h6></li>
                                 @*Dispatcher*@
@@ -86,3 +73,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
