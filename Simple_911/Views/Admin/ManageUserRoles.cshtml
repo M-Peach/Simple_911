@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Simple_911.Models.ViewModels.ManageUserRolesViewModel>
+
+@{
+    ViewData["Title"] = "Manage Roles";
+}
+
+<div class="row">
+    <hr>
+  <h2 class="m-t-0 h3"><b>Manage Employee Roles </b></h2>
+       <div>
+    <div classxfont-weighteighteightgetainer-fluid">
+        <div class="row gy-2">
+            <div class="col-md-12 col">
+                <div class="row col-cols-2 mt-5">
+                    <h1>Dashboard</h1>
+                        <div style='text-align:Left'>
+                            <a asp-controller="Admin"  asp-action="CreateRole"><button type="button" class="btn btn-primary text-muted"><b>Create New Role</b></button></a>
+                            <hr style="width:0%; text-align:right;margin-right:0">
+                        </div>
+
+  @foreach (var member in Model)
+  {
+  <div>
+    <div class="card text-white bg-primary mb-3" style="max-width: 30rem;">
+        <div class="card-body">
+      	    <center><h4 class="text-muted">
+      	        Edit Roles for: <strong class="text-danger">@member.User.FullName</strong>
+      	    	</h4>
+      	    	<hr />
+      	    	<form asp-action="ManageUserRoles" asp-controller="Admin" method=post>   
+                    <input type="hidden" asp-for="@member.User.Id"/>
+                    <div class="row">
+                        <div>
+                            <div class="form-group" >
+                                <label asp-for="@member.Roles" class="custom-label text-muted">Select the role you would like to assign @member.User.FirstName:</label>
+                                <select asp-for="@member.SelectedRoles" class="form-control" asp-items="@member.Roles" multiple></select>
+                                <hr>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Assign Role" class="btn btn-warning text-muted" />
+                            </div>
+                        </div>
+                    </div>
+      	    	</form></center>
+        </div>
+    </div>
+</div>
+}
