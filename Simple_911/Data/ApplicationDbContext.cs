@@ -10,7 +10,10 @@ namespace Simple_911.Data
             : base(options)
         {
         }
-
-
+        public DbSet<Incident> Incidents { get; set; }
+        public DbSet<IncidentNote> IncidentNotes { get; set; }
+        public DbSet<Priority> Priorities { get; set; }
+        public DbSet<CallType> CallTypes { get; set; }
+        public DbSet<Status> Statuses { get; set; }
     }
 }

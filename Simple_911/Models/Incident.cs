@@ -52,6 +52,12 @@ namespace Simple_911.Models
         [Display(Name = "Priority")]
         public int PriorityId { get; set; }
 
+        [Display(Name = "Call Type")]
+        public int TypeId { get; set; }
+
+        [Display(Name = "Unit Status")]
+        public int StatusId { get; set; }
+
         [Display(Name = "Call Taker")]
         public string CallTakerId { get; set; }
 
@@ -59,6 +65,10 @@ namespace Simple_911.Models
         public string DispatcherId { get; set; }
 
         public virtual Priority Priority { get; set; }
+
+        public virtual CallType CallType { get; set; }
+
+        public virtual Status Status { get; set; }
 
         public virtual SimpleUser CallTaker { get; set; }
 
