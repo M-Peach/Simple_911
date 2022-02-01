@@ -13,15 +13,15 @@ namespace Simple_911.Models
 
         [Required]
         [Display(Name = "City")]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [Required]
         [Display(Name = "State")]
-        public string State { get; set; }
+        public string? State { get; set; }
 
         [Required]
         [Display(Name = "Zip")]
-        public string Zip { get; set; }
+        public string? Zip { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTimeOffset Created { get; set; }
@@ -30,16 +30,15 @@ namespace Simple_911.Models
         public bool IsClosed { get; set; }
 
         [DataType(DataType.PhoneNumber)]
-        [Required]
         [Display(Name = "Callback Number")]
-        public string Callback { get; set; }
+        public string? Callback { get; set; }
 
         [NotMapped]
         [Display(Name = "Callback Number")]
         public string FormattedPhone { get { return String.Format("{0:(###) ###-####}", Convert.ToInt64(Callback)); } }
 
         [NotMapped]
-        public string NumberStreet { get { return Address.Replace(" ", "+"); } }
+        public string? NumberStreet { get { return Address.Replace(" ", "+"); } }
 
         [NotMapped]
         [Display(Name = "Address Link")]
@@ -47,13 +46,13 @@ namespace Simple_911.Models
 
         [NotMapped]
         [Display(Name = "Formatted Time")]
-        public string FormattedTime { get { return Created.ToString("MM/dd/yy H:mm EST"); } }
+        public string FormattedTime { get { return Created.ToString("MM/dd H:mm"); } }
 
         [Display(Name = "Priority")]
         public int PriorityId { get; set; }
 
         [Display(Name = "Call Type")]
-        public int TypeId { get; set; }
+        public int CallTypeId { get; set; }
 
         [Display(Name = "Unit Status")]
         public int StatusId { get; set; }
@@ -62,7 +61,10 @@ namespace Simple_911.Models
         public string CallTakerId { get; set; }
 
         [Display(Name = "Dispatcher")]
-        public string DispatcherId { get; set; }
+        public string? DispatcherId { get; set; }
+
+        [Display(Name = "Primary Unit")]
+        public string? PrimaryUnitId { get; set; }
 
         public virtual Priority Priority { get; set; }
 
@@ -72,7 +74,11 @@ namespace Simple_911.Models
 
         public virtual SimpleUser CallTaker { get; set; }
 
-        public virtual SimpleUser Dispatcher { get; set; }
+        public virtual SimpleUser? Dispatcher { get; set; }
+
+        public virtual SimpleUser? PrimaryUnit { get; set; }
+
+        public virtual ICollection<SimpleUser> SupportUnits { get; set; } = new HashSet<SimpleUser>();
 
         public virtual ICollection<IncidentNote> Notes { get; set; } = new HashSet<IncidentNote>();
     }

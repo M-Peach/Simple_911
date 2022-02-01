@@ -195,7 +195,6 @@ namespace Simple_911.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Callback")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("City")
@@ -206,11 +205,13 @@ namespace Simple_911.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DispatcherId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsClosed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("PrimaryUnitId")
+                        .HasColumnType("text");
 
                     b.Property<int>("PriorityId")
                         .HasColumnType("integer");
@@ -220,9 +221,6 @@ namespace Simple_911.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("StatusId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TypeId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Zip")
@@ -236,6 +234,8 @@ namespace Simple_911.Data.Migrations
                     b.HasIndex("CallTypeId");
 
                     b.HasIndex("DispatcherId");
+
+                    b.HasIndex("PrimaryUnitId");
 
                     b.HasIndex("PriorityId");
 
@@ -318,6 +318,9 @@ namespace Simple_911.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("IncidentId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -360,6 +363,8 @@ namespace Simple_911.Data.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IncidentId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -455,9 +460,11 @@ namespace Simple_911.Data.Migrations
 
                     b.HasOne("Simple_911.Models.SimpleUser", "Dispatcher")
                         .WithMany()
-                        .HasForeignKey("DispatcherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DispatcherId");
+
+                    b.HasOne("Simple_911.Models.SimpleUser", "PrimaryUnit")
+                        .WithMany()
+                        .HasForeignKey("PrimaryUnitId");
 
                     b.HasOne("Simple_911.Models.Priority", "Priority")
                         .WithMany()
@@ -476,6 +483,8 @@ namespace Simple_911.Data.Migrations
                     b.Navigation("CallType");
 
                     b.Navigation("Dispatcher");
+
+                    b.Navigation("PrimaryUnit");
 
                     b.Navigation("Priority");
 
@@ -501,9 +510,18 @@ namespace Simple_911.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Simple_911.Models.SimpleUser", b =>
+                {
+                    b.HasOne("Simple_911.Models.Incident", null)
+                        .WithMany("SupportUnits")
+                        .HasForeignKey("IncidentId");
+                });
+
             modelBuilder.Entity("Simple_911.Models.Incident", b =>
                 {
                     b.Navigation("Notes");
+
+                    b.Navigation("SupportUnits");
                 });
 #pragma warning restore 612, 618
         }

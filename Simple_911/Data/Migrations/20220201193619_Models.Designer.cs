@@ -12,8 +12,8 @@ using Simple_911.Data;
 namespace Simple_911.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220201024148_InitalUser")]
-    partial class InitalUser
+    [Migration("20220201193619_Models")]
+    partial class Models
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -156,6 +156,147 @@ namespace Simple_911.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Simple_911.Models.CallType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CallTypes");
+                });
+
+            modelBuilder.Entity("Simple_911.Models.Incident", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CallTakerId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("CallTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Callback")
+                        .HasColumnType("text");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DispatcherId")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("PrimaryUnitId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("PriorityId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Zip")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CallTakerId");
+
+                    b.HasIndex("CallTypeId");
+
+                    b.HasIndex("DispatcherId");
+
+                    b.HasIndex("PrimaryUnitId");
+
+                    b.HasIndex("PriorityId");
+
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("Incidents");
+                });
+
+            modelBuilder.Entity("Simple_911.Models.IncidentNote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("IncidentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IncidentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("IncidentNotes");
+                });
+
+            modelBuilder.Entity("Simple_911.Models.Priority", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Priorities");
+                });
+
             modelBuilder.Entity("Simple_911.Models.SimpleUser", b =>
                 {
                     b.Property<string>("Id")
@@ -178,6 +319,9 @@ namespace Simple_911.Data.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int?>("IncidentId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -222,6 +366,8 @@ namespace Simple_911.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IncidentId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -230,6 +376,23 @@ namespace Simple_911.Data.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Simple_911.Models.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Statuses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -281,6 +444,86 @@ namespace Simple_911.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Simple_911.Models.Incident", b =>
+                {
+                    b.HasOne("Simple_911.Models.SimpleUser", "CallTaker")
+                        .WithMany()
+                        .HasForeignKey("CallTakerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Simple_911.Models.CallType", "CallType")
+                        .WithMany()
+                        .HasForeignKey("CallTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Simple_911.Models.SimpleUser", "Dispatcher")
+                        .WithMany()
+                        .HasForeignKey("DispatcherId");
+
+                    b.HasOne("Simple_911.Models.SimpleUser", "PrimaryUnit")
+                        .WithMany()
+                        .HasForeignKey("PrimaryUnitId");
+
+                    b.HasOne("Simple_911.Models.Priority", "Priority")
+                        .WithMany()
+                        .HasForeignKey("PriorityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Simple_911.Models.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CallTaker");
+
+                    b.Navigation("CallType");
+
+                    b.Navigation("Dispatcher");
+
+                    b.Navigation("PrimaryUnit");
+
+                    b.Navigation("Priority");
+
+                    b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("Simple_911.Models.IncidentNote", b =>
+                {
+                    b.HasOne("Simple_911.Models.Incident", "Incident")
+                        .WithMany("Notes")
+                        .HasForeignKey("IncidentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Simple_911.Models.SimpleUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Incident");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Simple_911.Models.SimpleUser", b =>
+                {
+                    b.HasOne("Simple_911.Models.Incident", null)
+                        .WithMany("SupportUnits")
+                        .HasForeignKey("IncidentId");
+                });
+
+            modelBuilder.Entity("Simple_911.Models.Incident", b =>
+                {
+                    b.Navigation("Notes");
+
+                    b.Navigation("SupportUnits");
                 });
 #pragma warning restore 612, 618
         }

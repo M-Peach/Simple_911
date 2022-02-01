@@ -1,0 +1,88 @@
+﻿@model Simple_911.Models.Incident
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<SimpleUser> UserManager
+
+@{
+    ViewData["Title"] = "Edit";
+    SimpleUser simpleUser = await UserManager.GetUserAsync(User);
+}
+
+<h>Edit</h>
+
+<h4>Incident</h4>
+<hr />
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+<div>
+    <div classxfont-weighteighteightgetainer-fluid">
+        <div class="row gy-2">
+            <div class="col-md-12 col">
+                <div class="row col-cols-2 mt-5">
+                        <div style='text-align:right'>
+                            <a asp-action="Index"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Map Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
+                        </div>
+                    <div class="card col m-1 p-2 border-primary mb-3">
+                        <div class="card-body">
+                            @*Incident Type*@
+                            <h3>@Model.CallType.Description</h3>
+                            <hr />
+                            @*Description of Ticket*@
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Dispatch">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Callback" />
+            <input type="hidden" asp-for="CallTakerId" />
+            <input type="hidden" asp-for="Created" />
+            <input type="hidden" asp-for="Address" />
+            <input type="hidden" asp-for="City" />
+            <input type="hidden" asp-for="State" />
+            <input type="hidden" asp-for="Zip" />
+            <input type="hidden" asp-for="PriorityId" />
+            <input type="hidden" asp-for="CallTypeId" />
+            <input type="hidden" asp-for="Created" />
+            <div class="form-group">
+                <label asp-for="PrimaryUnitId" class="control-label"></label>
+                <select asp-for="PrimaryUnitId" class="form-control" asp-items="ViewBag.PrimaryUnitId"></select>
+                <span asp-validation-for="PrimaryUnitId" class="text-danger"></span>
+                <p></p>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+                        </div>
+                    </div>
+                    <div class="card col m-1 p-2 border-primary mb-3">
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                @*Type*@
+                                <li><h6><strong>Call Type:</strong> <span class="">  @Model.CallType.Name</span></h6></li>
+                                @*Priority*@
+                                <li><h6><strong>Priority:</strong> <span class="">  @Model.Priority.Name</span></h6></li>
+                                @*Date Time*@
+                                <li><h6><strong>Date Created:</strong> <span class="">  @Model.Created.ToString("MMM dd - H:mm")</</span></h6></li>
+                                @*Call Taker*@
+                                <li><h6><strong>Call Taker:</strong> <span class="">  @Model.CallTaker.FullName</span></h6></li>
+                                @*Dispatcher*@
+                                <li><h6><strong>Dispatcher:</strong> <span class="">  @simpleUser.FullName</span></h6></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

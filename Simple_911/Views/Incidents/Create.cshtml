@@ -33,40 +33,19 @@
                 <span asp-validation-for="Zip" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Created" class="control-label"></label>
-                <input asp-for="Created" class="form-control" />
-                <span asp-validation-for="Created" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsClosed" /> @Html.DisplayNameFor(model => model.IsClosed)
-                </label>
-            </div>
-            <div class="form-group">
                 <label asp-for="Callback" class="control-label"></label>
                 <input asp-for="Callback" class="form-control" />
                 <span asp-validation-for="Callback" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PriorityId" class="control-label"></label>
-                <select asp-for="PriorityId" class ="form-control" asp-items="ViewBag.PriorityId"></select>
+                <select asp-for="PriorityId" class="form-control" asp-items="ViewBag.PriorityId"></select>
+                <span asp-validation-for="PriorityId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TypeId" class="control-label"></label>
-                <input asp-for="TypeId" class="form-control" />
-                <span asp-validation-for="TypeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StatusId" class="control-label"></label>
-                <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CallTakerId" class="control-label"></label>
-                <select asp-for="CallTakerId" class ="form-control" asp-items="ViewBag.CallTakerId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DispatcherId" class="control-label"></label>
-                <select asp-for="DispatcherId" class ="form-control" asp-items="ViewBag.DispatcherId"></select>
+                <label asp-for="CallTypeId" class="control-label"></label>
+                <select asp-for="CallTypeId" class="form-control" asp-items="ViewBag.CallTypeId"></select> 
+                <span asp-validation-for="CallTypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

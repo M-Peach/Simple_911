@@ -63,7 +63,7 @@ namespace Simple_911.Services
                     .Include(t => t.Priority)
                     .Include(t => t.CallType)
                     .Include(t => t.Status)
-                    .Where(t => t.TypeId == typeId)
+                    .Where(t => t.CallTypeId == typeId)
                     .ToListAsync();
 
                 return incidents;
