@@ -64,13 +64,13 @@ else if (@Model.StatusId == 7)
             @if (User.IsInRole("Dispactcher") || User.IsInRole("Call Taker") || User.IsInRole("Manager") || User.IsInRole("Admin"))
             {
             <div style='text-align:right'>
-               <a asp-action="Dashboard"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit Incident</button></a>     @*<a asp-action="EMD" asp-route-id="@Model?.Id"><button type="button" class="btn btn-warning text-black">EMD Directions</button></a>*@     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
+               <a asp-action="Dashboard"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit Incident</button></a>     <a asp-action="TimeKeeper" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Incident Times</button></a>     @*<a asp-action="EMD" asp-route-id="@Model?.Id"><button type="button" class="btn btn-warning text-black">EMD Directions</button></a>*@     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>     <a asp-action="Delete" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
             </div>
             }
             else
             {
             <div style='text-align:right'>
-               <a asp-action="Dashboard"><button type="button" class="btn btn-primary">Back to List</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>
+               <a asp-action="Dashboard"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="TimeKeeper" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Incident Times</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>
             </div>
             }
             <div class="card col m-1 p-2 border-primary mb-3">

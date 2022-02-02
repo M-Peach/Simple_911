@@ -81,6 +81,10 @@ namespace Simple_911.Models
         [Display(Name = "Patient History")]
         public string? PtHistory { get; set; }
 
+        [Display(Name = "Time Keeper")]
+        public int? TimeKeeperId { get; set; }
+
+        public virtual TimeKeeper TimeKeeper { get; set; }
 
         public virtual Priority Priority { get; set; }
 

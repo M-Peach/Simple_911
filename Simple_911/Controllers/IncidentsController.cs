@@ -43,6 +43,29 @@ namespace Simple_911.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        // GET: TIMEKEEPER
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker, Ground Unit")]
+        public async Task<IActionResult> TimeKeeper(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+
+
+            Incident incident = await _incidentsService.GetIncidentByIdAsync(id.Value);
+
+            //incident.TimeKeeper = TimeKeeper timeKeeper.Id;
+
+            if (incident == null)
+            {
+                return NotFound();
+            }
+
+            return View(incident);
+        }
+
         // GET: Incidents/Details/5
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker, Ground Unit")]
         public async Task<IActionResult> Details(int? id)
@@ -90,6 +113,10 @@ namespace Simple_911.Controllers
             incident.CallTakerId = user.Id;
 
             incident.Created = DateTimeOffset.Now;
+
+            incident.TimeKeeper.TCreated = DateTimeOffset.Now;
+
+            incident.TimeKeeper.Id = incident.Id;
 
             incident.StatusId = 1; // "1" is "Pending"
 
@@ -252,6 +279,8 @@ namespace Simple_911.Controllers
 
             try
             {
+                incident.TimeKeeper.TDispatched = DateTimeOffset.Now;
+
                 incident.StatusId = 2;
 
                 SimpleUser user = await _userManager.GetUserAsync(User);
@@ -318,6 +347,8 @@ namespace Simple_911.Controllers
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> Enroute([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
+            incident.TimeKeeper.TEnroute = DateTimeOffset.Now;
+
             incident.StatusId = 3;
 
             _context.Update(incident);
@@ -334,6 +365,8 @@ namespace Simple_911.Controllers
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> Onscene([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
+            incident.TimeKeeper.TOnscene = DateTimeOffset.Now;
+
             incident.StatusId = 4;
 
             _context.Update(incident);
@@ -350,6 +383,8 @@ namespace Simple_911.Controllers
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> Transporting([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
+            incident.TimeKeeper.TTransporting = DateTimeOffset.Now;
+
             incident.StatusId = 5;
 
             _context.Update(incident);
@@ -366,6 +401,8 @@ namespace Simple_911.Controllers
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> AtHospital([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
+            incident.TimeKeeper.THospital = DateTimeOffset.Now;
+
             incident.StatusId = 6;
 
             _context.Update(incident);
@@ -382,6 +419,8 @@ namespace Simple_911.Controllers
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> InService([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
+            incident.TimeKeeper.TInService = DateTimeOffset.Now;
+
             incident.StatusId = 7;
 
             _context.Update(incident);
@@ -398,6 +437,8 @@ namespace Simple_911.Controllers
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> OOS([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
+            incident.TimeKeeper.TOOS = DateTimeOffset.Now;
+
             incident.StatusId = 8;
 
             _context.Update(incident);
@@ -414,6 +455,8 @@ namespace Simple_911.Controllers
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> AssistUnit([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
+            incident.TimeKeeper.TAssist = DateTimeOffset.Now;
+
             incident.StatusId = 9;
 
             _context.Update(incident);
