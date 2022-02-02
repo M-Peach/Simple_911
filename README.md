@@ -13,10 +13,26 @@ Ground Units view only the relevant information about an Incident.
 
 Can be configured for Fire, EMS, Police, or all three together.
 
-Users own indiviual accounts with assigned roles that allow for specific content to be veiwed, and edited. 
+Current Features:
+- Create Users and Assign Roles
+- Call Takers Created Incident (Provide Address, Call Type, Priority)
+- Dispatchers Assign a Ground Unit to Incident
+- Call Taker may add Patient Info (Age, Sex, Breathing Status, Consciousness, Medical History)
+- Both Call Takers & Dispatchers can add notes to Incident
+- Incident Archive + Restore by Admin or Manager
+- Status Buttons available for use by ONLY Assigned Ground Unit and Dispatcher
+- Ground Units are prevented from adding notes and seeing the note-form-ui (Reduces Clutter, Maintains Easy-To-Read Page)
+- Geo-Locate button. Locates Incident using Google Maps
+- More small feautres
 
-Once an incident is complete it can be archived, and viewed or re-opened by an admin or manager.
+Road Map:
+- Time Logger (Log Time for dispatch, enroute, onscene, etc..) (Has Time Created)
+- Add multiple Units to a single Incident
+- Unit Status instead of Incident Status (Or Both!)
+- On-Screen Notifications for Ground Units when assigned a run
+- Emergency / Mayday button
 
-Users may use the "Directions" button to view Directions to Incident using Google Maps.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 Built on ASP.NET Core MVC. Using Npgsql to connect PostgreSQL to save and manage data. 
+M-Peach is the sole-contributor of this project.
