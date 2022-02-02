@@ -7,7 +7,13 @@
     SimpleUser simpleUser = await UserManager.GetUserAsync(User);
 }
 
-<h1>Index</h1>
+<h2>Dashboard</h2>
+
+@if(User.IsInRole("Admin") || User.IsInRole("Manager"))
+{
+    <a asp-action="Index"><button type="button" class="btn btn-primary">Show Archives</button></a>
+
+}
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -15,6 +21,9 @@
 <table class="table">
     <thead>
         <tr class="table-primary">
+            <th>
+                CREATED
+            </th>
            <th>
                 ADDRESS
             </th>
@@ -35,17 +44,20 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
+        <tr class="table-secondary">
+            <td class="text-black">
+                @Html.DisplayFor(modelItem => item.FormattedTime)
+            </td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
-            <td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.CallType.Name)
             </td>
-            <td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.PrimaryUnit.UnitNumber)
             </td>
-            <td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.PrimaryUnit.FirstName)
             </td>
             <td>
@@ -55,35 +67,35 @@
                     }
                     else if (item.Status.Id == 2)
                     {
-                        <span class="badge bg-primary">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+                        <span class="badge bg-primary text-muted">@Html.DisplayFor(modelItem => item.Status.Name)</span>
                     }
                     else if (item.Status.Id == 3)
                     {
-                        <span class="badge bg-warning">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+                        <span class="badge bg-warning text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
                     }
                     else if (item.Status.Id == 4)
                     {
-                        <span class="badge bg-info">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+                        <span class="badge bg-info text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
                     }
                     else if (item.Status.Id == 5)
                     {
-                        <span class="badge bg-warning">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+                        <span class="badge bg-warning text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
                     }
                      else if (item.Status.Id == 6)
                     {
-                        <span class="badge bg-info">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+                        <span class="badge bg-info text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
                     }
                     else if (item.Status.Id == 7)
                     {
-                        <span class="badge bg-success">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+                        <span class="badge bg-success text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
                     }
                     else if (item.Status.Id == 8)
                     {
-                        <span class="badge bg-danger">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+                        <span class="badge bg-danger text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
                     }
                     else if (item.Status.Id == 9)
                     {
-                        <span class="badge bg-info">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+                        <span class="badge bg-primary text-muted">@Html.DisplayFor(modelItem => item.Status.Name)</span>
                     }
                     else
                     {
@@ -92,14 +104,32 @@
                     
             </td>
             <td>
-                @if(User.IsInRole("Call Taker") || User.IsInRole("Admin"))
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id">EDIT</a>   <a asp-action="Patient" asp-route-id="@item.Id">PT INFO</a>
-                }
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Dispatch" asp-route-id="@item.Id">Dispatch</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    @if(User.IsInRole("Manager") || User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>
+                        <a asp-action="Patient" asp-route-id="@item.Id" class="badge bg-light text-black">PT INFO</a>
+                        <a asp-action="Dispatch" asp-route-id="@item.Id" class="badge bg-light text-black">DISPATCH</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">DELETE</a> 
+                    }
+                    else if(User.IsInRole("Call Taker"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>
+                        <a asp-action="Patient" asp-route-id="@item.Id" class="badge bg-light text-black">PT INFO</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">DELETE</a> 
+                    }
+                    else if (User.IsInRole("Dispatcher"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>
+                        <a asp-action="Dispatch" asp-route-id="@item.Id" class="badge bg-light text-black">DISPATCH</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">DELETE</a>
+                    }
+                    else if(User.IsInRole("Ground Unit"))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    }
             </td>
         </tr>
 }

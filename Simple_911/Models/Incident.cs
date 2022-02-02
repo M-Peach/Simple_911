@@ -46,7 +46,7 @@ namespace Simple_911.Models
 
         [NotMapped]
         [Display(Name = "Formatted Time")]
-        public string FormattedTime { get { return Created.ToString("MM/dd H:mm"); } }
+        public string FormattedTime { get { return Created.ToString("MM/dd ~ H:mm"); } }
 
         [Display(Name = "Priority")]
         public int PriorityId { get; set; }

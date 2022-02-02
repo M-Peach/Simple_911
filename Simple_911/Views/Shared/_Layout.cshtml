@@ -19,12 +19,27 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                @if (User.IsInRole("Admin"))
+                { 
+                    <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Incidents" asp-action="Dashboard">Incidents</a>
+                    </li> 
+                    <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ManageUserRoles">User Roles</a>
+                    </li>
+                    }
+                    else if(User.IsInRole("Manager") || User.IsInRole("Dispatcher") || User.IsInRole("Call Taker"))
+                    {
+                    <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Incidents" asp-action="Dashboard">Incidents</a>
+                    </li>
+                    }
+                    else if(User.IsInRole("Ground Unit"))
+                    {
+                    <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Incidents" asp-action="Dashboard">Incidents</a>
+                    </li>     
+                    }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

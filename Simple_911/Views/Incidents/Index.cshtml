@@ -11,7 +11,7 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
+        <tr class="table-primary">>
             <th>
                 @Html.DisplayNameFor(model => model.Address)
             </th>
@@ -39,12 +39,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.PrimaryUnit)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsClosed)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="table-secondary">
             <td>
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
@@ -73,10 +76,20 @@
                 @Html.DisplayFor(modelItem => item.PrimaryUnit.UnitNumber)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.IsClosed)
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Dispatch" asp-route-id="@item.Id">Dispatch</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @if(@item.IsClosed)
+                {
+                <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+                }
+                else
+                {
+                <a asp-action="Delete" asp-route-id="@item.Id">Archive</a>
+                }
             </td>
         </tr>
 }
