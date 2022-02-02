@@ -92,9 +92,9 @@
                     
             </td>
             <td>
-                @if(User.IsInRole("Call Taker"))
+                @if(User.IsInRole("Call Taker") || User.IsInRole("Admin"))
                 {
-                    <a asp-action="Edit" asp-route-id="@item.Id">EDIT</a>   <a asp-action="" asp-route-id="@item.Id">PT INFO</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">EDIT</a>   <a asp-action="Patient" asp-route-id="@item.Id">PT INFO</a>
                 }
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Dispatch" asp-route-id="@item.Id">Dispatch</a> |

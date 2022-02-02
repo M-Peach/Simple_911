@@ -29,13 +29,13 @@ else if (@Model.StatusId == 2)
                     @if (User.IsInRole("Dispactcher") || User.IsInRole("Call Taker") || User.IsInRole("Manager") || User.IsInRole("Admin"))
                     {
                         <div style='text-align:right'>
-                            <a asp-action="Index"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
+                            <a asp-action="Index"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit Incident</button></a>     @*<a asp-action="EMD" asp-route-id="@Model?.Id"><button type="button" class="btn btn-warning text-black">EMD Directions</button></a>*@     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
                         </div>
                     }
                     else
                     {
                         <div style='text-align:right'>
-                            <a asp-action="Index"><button type="button" class="btn btn-primary">Back to List</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
+                            <a asp-action="Index"><button type="button" class="btn btn-primary">Back to List</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>
                         </div>
                     }
                     <div class="card col m-1 p-2 border-primary mb-3">
@@ -74,8 +74,34 @@ else if (@Model.StatusId == 2)
                 </div>
             </div>
         </div>
+                            <div class="card col m-1 p-2 border-primary mb-3">
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                @*Type*@
+                                <li><h6><strong>Patient Age:</strong> <span class="">  @Model.PtAge Years Old.   <strong>Patient Sex:</strong>  @Model.PtSex</span></h6></li>
+
+                    @if(Model.PtCon == "CONSCIOUS" && Model.PtBreath == "BREATHING")
+                    {
+                        <li><h6>Patient is <b>@Model.PtCon</b> and <b>@Model.PtBreath</b>.</h6></li>
+                    }
+                    @if(Model.PtCon == "UNCONSCIOUS" && Model.PtBreath == "BREATHING")
+                    {
+                        <li><h6 class="text-warning">Patient is <b>@Model.PtCon</b> but <b>@Model.PtBreath</b>.</h6></li>
+                    }
+                    @if(Model.PtCon == "UNCONSCIOUS" && Model.PtBreath == "BREATHING")
+                    {
+                        <li><h6 class="text-danger">Patient is <b>@Model.PtCon</b> and <b>@Model.PtBreath</b>.</h6></li>
+                    }
+                    @if(Model.PtHistory != null)
+                    {
+                        <li><h6><strong>Patient History:</strong> <span class="">  @Model.PtHistory.</span></h6></li>
+                    }
+                            </ul>
+                        </div>
+                    </div>
     </div>
 </div>
+
 @*INCIDENT NOTES*@
 <div class="card text-white bg-primary mb-3">
     <div class="card-header">Incident Notes:</div>

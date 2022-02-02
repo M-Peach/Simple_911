@@ -100,6 +100,59 @@ namespace Simple_911.Controllers
             return RedirectToAction(nameof(Dashboard));
         }
 
+        // GET: PATIENT
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
+        public async Task<IActionResult> Patient(int? id)
+        {
+            Incident incident = await _incidentsService.GetIncidentByIdAsync(id.Value);
+
+            return View(incident);
+        }
+
+        // POST: PATIENT
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
+        public async Task<IActionResult> Patient([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
+        {
+            if (incident.PtSex.ToUpper() == "M" || incident.PtSex.ToUpper() == "MAN" || incident.PtSex.ToUpper() == "MALE")
+            {
+                incident.PtSex = "MALE";
+            }
+            else if (incident.PtSex.ToUpper() == "F" || incident.PtSex.ToUpper() == "FEMALE" || incident.PtSex.ToUpper() == "W")
+            {
+                incident.PtSex = "FEMALE";
+            }
+            else {  }
+
+            if (incident.PtCon.ToUpper() == "Y" || incident.PtCon.ToUpper() == "YES" || incident.PtCon.ToUpper() == "C")
+            {
+                incident.PtCon = "CONSCIOUS";
+            }
+            else if (incident.PtCon.ToUpper() == "N" || incident.PtCon.ToUpper() == "NO" || incident.PtCon.ToUpper() == "UNC")
+            {
+                incident.PtCon = "UNCONSCIOUS";
+            }
+            else { }
+
+            if (incident.PtBreath.ToUpper() == "Y" || incident.PtBreath.ToUpper() == "YES" || incident.PtBreath.ToUpper() == "B")
+            {
+                incident.PtBreath = "BREATHING";
+            }
+            else if (incident.PtBreath.ToUpper() == "N" || incident.PtBreath.ToUpper() == "NO" || incident.PtBreath.ToUpper() == "NOT")
+            {
+                incident.PtBreath = "UNCONSCIOUS";
+            }
+            else { }
+
+            _context.Update(incident);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Dashboard));
+        }
+
         // GET: Incidents/Edit/5
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> Edit(int? id)

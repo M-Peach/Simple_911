@@ -66,6 +66,22 @@ namespace Simple_911.Models
         [Display(Name = "Primary Unit")]
         public string? PrimaryUnitId { get; set; }
 
+        [Display(Name = "Patient Age")]
+        public string? PtAge { get; set; }
+
+        [Display(Name = "Patient Sex")]
+        public string? PtSex { get; set; }
+
+        [Display(Name = "Patient Conciousness")]
+        public string? PtCon { get; set; }
+
+        [Display(Name = "Patient Breathing")]
+        public string? PtBreath { get; set; }
+
+        [Display(Name = "Patient History")]
+        public string? PtHistory { get; set; }
+
+
         public virtual Priority Priority { get; set; }
 
         public virtual CallType CallType { get; set; }
