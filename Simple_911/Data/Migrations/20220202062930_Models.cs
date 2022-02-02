@@ -199,7 +199,12 @@ namespace Simple_911.Data.Migrations
                     StatusId = table.Column<int>(type: "integer", nullable: false),
                     CallTakerId = table.Column<string>(type: "text", nullable: false),
                     DispatcherId = table.Column<string>(type: "text", nullable: true),
-                    PrimaryUnitId = table.Column<string>(type: "text", nullable: true)
+                    PrimaryUnitId = table.Column<string>(type: "text", nullable: true),
+                    PtAge = table.Column<string>(type: "text", nullable: true),
+                    PtSex = table.Column<string>(type: "text", nullable: true),
+                    PtCon = table.Column<string>(type: "text", nullable: true),
+                    PtBreath = table.Column<string>(type: "text", nullable: true),
+                    PtHistory = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

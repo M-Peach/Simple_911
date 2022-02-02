@@ -216,6 +216,21 @@ namespace Simple_911.Data.Migrations
                     b.Property<int>("PriorityId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("PtAge")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PtBreath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PtCon")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PtHistory")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PtSex")
+                        .HasColumnType("text");
+
                     b.Property<string>("State")
                         .IsRequired()
                         .HasColumnType("text");

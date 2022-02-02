@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<Simple_911.Models.Incident>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Archive";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
+<h1>Archive</h1>
+
+<p style="text-align:right">
+    <a asp-action="Dashboard"><button type="button" class="btn btn-primary">Back to Dashboard</button></a>
 </p>
 <table class="table">
     <thead>
-        <tr>
+        <tr class="table-primary">
             <th>
                 @Html.DisplayNameFor(model => model.Address)
             </th>
@@ -39,44 +39,56 @@
             <th>
                 @Html.DisplayNameFor(model => model.PrimaryUnit)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsClosed)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
+        <tr class="table-secondary">
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
-            <td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.City)
             </td>
-            <td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.FormattedTime)
             </td>
-            <td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.CallType.Name)
             </td>
-            <td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.Priority.Name)
             </td>
-            <td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.Status.Name)
             </td>
-            <td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.CallTaker.FullName)
             </td>
-            <td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.Dispatcher.FullName)
             </td>
-            <td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.PrimaryUnit.UnitNumber)
             </td>
+            <td class="text-black">
+                @Html.DisplayFor(modelItem => item.IsClosed)
+            </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Dispatch" asp-route-id="@item.Id">Dispatch</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>  
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
+                @if(@item.IsClosed)
+                {
+                <a asp-action="Restore" asp-route-id="@item.Id" class="badge bg-light text-black">RESTORE</a>
+                }
+                else
+                {
+                <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">ARCHIVE</a>
+                }
             </td>
         </tr>
 }

@@ -3,112 +3,393 @@
 @inject UserManager<SimpleUser> UserManager
 
 @{
-    ViewData["Title"] = "Details";
-    SimpleUser simpleUser = await UserManager.GetUserAsync(User);
+ViewData["Title"] = "Details";
+SimpleUser simpleUser = await UserManager.GetUserAsync(User);
 }
-
-
-    @if(Model.StatusId == 1)
-    {
-        <div class="progress">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 10%;"></div></div>
+@if(Model.StatusId == 1)
+{
+<h5>Incident Progress:</h5>
+<div class="progress">
+   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 10%;"></div>
+</div>
 }
 else if (@Model.StatusId == 2)
 {
-            <div class="progress">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div></div>
+<h5>Incident Progress:</h5>
+<div class="progress">
+   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
+</div>
 }
-
+else if (@Model.StatusId == 3)
+{
+<h5>Incident Progress:</h5>
+<div class="progress">
+   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>
+</div>
+}
+else if (@Model.StatusId == 4)
+{
+<h5>Incident Progress:</h5>
+<div class="progress">
+   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+</div>
+}
+else if (@Model.StatusId == 5)
+{
+<h5>Incident Progress:</h5>
+<div class="progress">
+   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 70%;"></div>
+</div>
+}
+else if (@Model.StatusId == 6)
+{
+<h5>Incident Progress:</h5>
+<div class="progress">
+   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
+</div>
+}
+else if (@Model.StatusId == 7)
+{
+<h5>Incident Progress:</h5>
+<div class="progress">
+   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+</div>
+}
 <input type="hidden" asp-for="PriorityId" />
-
 <div>
-    <div classxfont-weighteighteightgetainer-fluid">
-        <div class="row gy-2">
-            <div class="col-md-12 col">
-                <div class="row col-cols-2 mt-5">
-                    @if (User.IsInRole("Dispactcher") || User.IsInRole("Call Taker") || User.IsInRole("Manager") || User.IsInRole("Admin"))
-                    {
-                        <div style='text-align:right'>
-                            <a asp-action="Index"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
-                        </div>
-                    }
-                    else
-                    {
-                        <div style='text-align:right'>
-                            <a asp-action="Index"><button type="button" class="btn btn-primary">Back to List</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
-                        </div>
-                    }
-                    <div class="card col m-1 p-2 border-primary mb-3">
-                        <div class="card-body">
-                            @*Incident Type*@
-                            <h3>@Model.CallType.Description</h3>
-                            <hr />
-                            @*Description of Ticket*@
-                        <p><h5><span class="">  <b>@Model.Address</b>   -   @Model.City, @Model.State, @Model.Zip</h5></span></p>
-                        <p></p>
-                        </div>
-                    </div>
-                    <div class="card col m-1 p-2 border-primary mb-3">
-                        <div class="card-body">
-                            <ul class="list-unstyled">
-                                @*Type*@
-                                <li><h6><strong>Call Type:</strong> <span class="">  @Model.CallType.Name</span></h6></li>
-                                @*Priority*@
-                                <li><h6><strong>Priority:</strong> <span class="">  @Model.Priority.Name</span></h6></li>
-                                @*Date Time*@
-                                <li><h6><strong>Date Created:</strong> <span class="">  @Model.Created.ToString("MMM dd - H:mm")</</span></h6></li>
-                                @*Call Taker*@
-                                <li><h6><strong>Call Taker:</strong> <span class="">  @Model.CallTaker.FullName</span></h6></li>
-                                @if(@Model.Dispatcher == null)
-                                {
-                                    
-                                }
-                                else
-                                {
-                                @*Dispatcher*@
-                                <li><h6><strong>Dispatcher:</strong> <span class="">  @Model.Dispatcher.FullName</span></h6></li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+<div classxfont-weighteighteightgetainer-fluid">
+   <div class="row gy-2">
+      <div class="col-md-12 col">
+         <div class="row col-cols-2 mt-5">
+            @if (User.IsInRole("Dispactcher") || User.IsInRole("Call Taker") || User.IsInRole("Manager") || User.IsInRole("Admin"))
+            {
+            <div style='text-align:right'>
+               <a asp-action="Dashboard"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit Incident</button></a>     @*<a asp-action="EMD" asp-route-id="@Model?.Id"><button type="button" class="btn btn-warning text-black">EMD Directions</button></a>*@     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
             </div>
-        </div>
-    </div>
+            }
+            else
+            {
+            <div style='text-align:right'>
+               <a asp-action="Dashboard"><button type="button" class="btn btn-primary">Back to List</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Geo-Location</button></a>
+            </div>
+            }
+            <div class="card col m-1 p-2 border-primary mb-3">
+               <div class="card-body">
+                  @*Incident Type*@
+                  <h3>@Model.CallType.Description</h3>
+                  <hr />
+                  @*Description of Ticket*@
+                  <p>
+                  <h5><span class="">  <b>@Model.Address</b>   -   @Model.City, @Model.State, @Model.Zip</h5>
+                  </span></p>
+                  @if(Model.PrimaryUnit != null)
+                  {
+                  <p>
+                  <h6>@Model.PrimaryUnit.UnitNumber  -  @Model.Status.Name</h6>
+                  </p>
+                  }
+               </div>
+            </div>
+            <div class="card col m-1 p-2 border-primary mb-3">
+               <div class="card-body">
+                  <ul class="list-unstyled">
+                     @*Type*@
+                     <li>
+                        <h6><strong>Call Type:</strong> <span class="">  @Model.CallType.Name</span></h6>
+                     </li>
+                     @*Priority*@
+                     <li>
+                        <h6><strong>Priority:</strong> <span class="">  @Model.Priority.Name</span></h6>
+                     </li>
+                     @*Date Time*@
+                     <li>
+                        <h6><strong>Date Created:</strong> <span class="">  @Model.Created.ToString("MMM dd - H:mm")</</span></h6>
+                     </li>
+                     @*Call Taker*@
+                     <li>
+                        <h6><strong>Call Taker:</strong> <span class="">  @Model.CallTaker.FullName</span></h6>
+                     </li>
+                     @if(@Model.Dispatcher == null)
+                     {
+                     }
+                     else
+                     {
+                     @*Dispatcher*@
+                     <li>
+                        <h6><strong>Dispatcher:</strong> <span class="">  @Model.Dispatcher.FullName</span></h6>
+                     </li>
+                     }
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row col-cols-2" style="text-align:center">
+      <div class="card col m-1 p-2 border-primary mb-3" style="max-width: 30rem;">
+         <div class="card-header">Patient Information:</div>
+         <div class="card-body" style="text-align:center">
+            <ul class="list-unstyled">
+               @if(Model.PtAge == null || Model.PtSex == null)
+               {
+               }
+               else
+               {
+               <li>
+                  <h6><strong>Patient Age:</strong> <span class="">  @Model.PtAge Years Old.   <strong>Patient Sex:</strong>  @Model.PtSex</span></h6>
+               </li>
+               }
+               @if(Model.PtCon == "CONSCIOUS" && Model.PtBreath == "BREATHING")
+               {
+               <li>
+                  <h6>Patient is <b>@Model.PtCon</b> and <b>@Model.PtBreath</b>.</h6>
+               </li>
+               }
+               @if(Model.PtCon == "UNCONSCIOUS" && Model.PtBreath == "BREATHING")
+               {
+               <li>
+                  <h6 class="text-warning">Patient is <b>@Model.PtCon</b> but <b>@Model.PtBreath</b>.</h6>
+               </li>
+               }
+               @if(Model.PtCon == "UNCONSCIOUS" && Model.PtBreath == "NOT BREATHING")
+               {
+               <li>
+                  <h6 class="text-danger">Patient is <b>@Model.PtCon</b> and <b>@Model.PtBreath</b>.</h6>
+               </li>
+               }
+               @if(Model.PtHistory != null)
+               {
+               <li>
+                  <h6><strong>Patient History:</strong> <span class="">  @Model.PtHistory.</span></h6>
+               </li>
+               }
+            </ul>
+         </div>
+      </div>
+      <div class="card col m-1 p-2 border-primary mb-3" style="max-width: 55rem;">
+         <div class="card-body" style="text-align:center">
+            @if(simpleUser.UnitNumber == Model.PrimaryUnit.UnitNumber || simpleUser.UnitNumber == Model.Dispatcher.UnitNumber)
+            {
+            <div class="input-group col m-1 p-2 r-3" style="text-align:center">
+               <h4>
+                  <pre>       </pre>
+               </h4>
+               <form asp-action="Enroute" asp-controller="Incidents" method="post">
+                  <input type="hidden" asp-for="Id" name="IncidentId" />
+                  <input type="hidden" asp-for="Id" />
+                  <input type="hidden" asp-for="Address" />
+                  <input type="hidden" asp-for="City" />
+                  <input type="hidden" asp-for="State" />
+                  <input type="hidden" asp-for="Zip" />
+                  <input type="hidden" asp-for="Created" />
+                  <input type="hidden" asp-for="IsClosed" />
+                  <input type="hidden" asp-for="Callback" />
+                  <input type="hidden" asp-for="PriorityId" />
+                  <input type="hidden" asp-for="CallTypeId" />
+                  <input type="hidden" asp-for="StatusId" />
+                  <input type="hidden" asp-for="CallTakerId" />
+                  <input type="hidden" asp-for="DispatcherId" />
+                  <input type="hidden" asp-for="PtAge" />
+                  <input type="hidden" asp-for="PtSex" />
+                  <input type="hidden" asp-for="PtBreath" />
+                  <input type="hidden" asp-for="PtHistory" />
+                  <input type="hidden" asp-for="PtCon" />
+                  <input type="hidden" asp-for="PrimaryUnitId" />
+                  <button class="btn btn-warning text-black r-3"><b>ENROUTE</b></button>
+               </form>
+               <h4>
+                  <pre>   </pre>
+               </h4>
+               <form asp-action="Onscene" asp-controller="Incidents" method="post">
+                  <input type="hidden" asp-for="Id" name="IncidentId" />
+                  <input type="hidden" asp-for="Id" />
+                  <input type="hidden" asp-for="Address" />
+                  <input type="hidden" asp-for="City" />
+                  <input type="hidden" asp-for="State" />
+                  <input type="hidden" asp-for="Zip" />
+                  <input type="hidden" asp-for="Created" />
+                  <input type="hidden" asp-for="IsClosed" />
+                  <input type="hidden" asp-for="Callback" />
+                  <input type="hidden" asp-for="PriorityId" />
+                  <input type="hidden" asp-for="CallTypeId" />
+                  <input type="hidden" asp-for="StatusId" />
+                  <input type="hidden" asp-for="CallTakerId" />
+                  <input type="hidden" asp-for="DispatcherId" />
+                  <input type="hidden" asp-for="PtAge" />
+                  <input type="hidden" asp-for="PtSex" />
+                  <input type="hidden" asp-for="PtBreath" />
+                  <input type="hidden" asp-for="PtHistory" />
+                  <input type="hidden" asp-for="PtCon" />
+                  <input type="hidden" asp-for="PrimaryUnitId" />
+                  <button class="btn btn-info text-black"><b>ONSCENE</b></button>
+               </form>
+               <h4>
+                  <pre>   </pre>
+               </h4>
+               <form asp-action="Transporting" asp-controller="Incidents" method="post">
+                  <input type="hidden" asp-for="Id" name="IncidentId" />
+                  <input type="hidden" asp-for="Id" />
+                  <input type="hidden" asp-for="Address" />
+                  <input type="hidden" asp-for="City" />
+                  <input type="hidden" asp-for="State" />
+                  <input type="hidden" asp-for="Zip" />
+                  <input type="hidden" asp-for="Created" />
+                  <input type="hidden" asp-for="IsClosed" />
+                  <input type="hidden" asp-for="Callback" />
+                  <input type="hidden" asp-for="PriorityId" />
+                  <input type="hidden" asp-for="CallTypeId" />
+                  <input type="hidden" asp-for="StatusId" />
+                  <input type="hidden" asp-for="CallTakerId" />
+                  <input type="hidden" asp-for="DispatcherId" />
+                  <input type="hidden" asp-for="PtAge" />
+                  <input type="hidden" asp-for="PtSex" />
+                  <input type="hidden" asp-for="PtBreath" />
+                  <input type="hidden" asp-for="PtHistory" />
+                  <input type="hidden" asp-for="PtCon" />
+                  <input type="hidden" asp-for="PrimaryUnitId" />
+                  <button class="btn btn-warning text-black"><b>TRANSPORTING</b></button>
+               </form>
+               <h4>
+                  <pre>   </pre>
+               </h4>
+               <form asp-action="AtHospital" asp-controller="Incidents" method="post">
+                  <input type="hidden" asp-for="Id" name="IncidentId" />
+                  <input type="hidden" asp-for="Id" />
+                  <input type="hidden" asp-for="Address" />
+                  <input type="hidden" asp-for="City" />
+                  <input type="hidden" asp-for="State" />
+                  <input type="hidden" asp-for="Zip" />
+                  <input type="hidden" asp-for="Created" />
+                  <input type="hidden" asp-for="IsClosed" />
+                  <input type="hidden" asp-for="Callback" />
+                  <input type="hidden" asp-for="PriorityId" />
+                  <input type="hidden" asp-for="CallTypeId" />
+                  <input type="hidden" asp-for="StatusId" />
+                  <input type="hidden" asp-for="CallTakerId" />
+                  <input type="hidden" asp-for="DispatcherId" />
+                  <input type="hidden" asp-for="PtAge" />
+                  <input type="hidden" asp-for="PtSex" />
+                  <input type="hidden" asp-for="PtBreath" />
+                  <input type="hidden" asp-for="PtHistory" />
+                  <input type="hidden" asp-for="PtCon" />
+                  <input type="hidden" asp-for="PrimaryUnitId" />
+                  <button class="btn btn-info text-black"><b>AT HOSPITAL</b></button>
+               </form>
+            </div>
+            <div class="input-group col m-1 p-2 r-3">
+               <h4>
+                  <pre>              </pre>
+               </h4>
+               <form asp-action="InService" asp-controller="Incidents" method="post">
+                  <input type="hidden" asp-for="Id" name="IncidentId" />
+                  <input type="hidden" asp-for="Id" />
+                  <input type="hidden" asp-for="Address" />
+                  <input type="hidden" asp-for="City" />
+                  <input type="hidden" asp-for="State" />
+                  <input type="hidden" asp-for="Zip" />
+                  <input type="hidden" asp-for="Created" />
+                  <input type="hidden" asp-for="IsClosed" />
+                  <input type="hidden" asp-for="Callback" />
+                  <input type="hidden" asp-for="PriorityId" />
+                  <input type="hidden" asp-for="CallTypeId" />
+                  <input type="hidden" asp-for="StatusId" />
+                  <input type="hidden" asp-for="CallTakerId" />
+                  <input type="hidden" asp-for="DispatcherId" />
+                  <input type="hidden" asp-for="PtAge" />
+                  <input type="hidden" asp-for="PtSex" />
+                  <input type="hidden" asp-for="PtBreath" />
+                  <input type="hidden" asp-for="PtHistory" />
+                  <input type="hidden" asp-for="PtCon" />
+                  <input type="hidden" asp-for="PrimaryUnitId" />
+                  <button class="btn btn-success text-black"><b>IN SERVICE</b></button>
+               </form>
+               <h4>
+                  <pre>   </pre>
+               </h4>
+               <form asp-action="OOS" asp-controller="Incidents" method="post">
+                  <input type="hidden" asp-for="Id" name="IncidentId" />
+                  <input type="hidden" asp-for="Id" />
+                  <input type="hidden" asp-for="Address" />
+                  <input type="hidden" asp-for="City" />
+                  <input type="hidden" asp-for="State" />
+                  <input type="hidden" asp-for="Zip" />
+                  <input type="hidden" asp-for="Created" />
+                  <input type="hidden" asp-for="IsClosed" />
+                  <input type="hidden" asp-for="Callback" />
+                  <input type="hidden" asp-for="PriorityId" />
+                  <input type="hidden" asp-for="CallTypeId" />
+                  <input type="hidden" asp-for="StatusId" />
+                  <input type="hidden" asp-for="CallTakerId" />
+                  <input type="hidden" asp-for="DispatcherId" />
+                  <input type="hidden" asp-for="PtAge" />
+                  <input type="hidden" asp-for="PtSex" />
+                  <input type="hidden" asp-for="PtBreath" />
+                  <input type="hidden" asp-for="PtHistory" />
+                  <input type="hidden" asp-for="PtCon" />
+                  <input type="hidden" asp-for="PrimaryUnitId" />
+                  <button class="btn btn-danger text-black"><b>OUT OF SERVICE</b></button>
+               </form>
+               <h4>
+                  <pre>   </pre>
+               </h4>
+               <form asp-action="AssistUnit" asp-controller="Incidents" method="post">
+                  <input type="hidden" asp-for="Id" name="IncidentId" />
+                  <input type="hidden" asp-for="Id" />
+                  <input type="hidden" asp-for="Address" />
+                  <input type="hidden" asp-for="City" />
+                  <input type="hidden" asp-for="State" />
+                  <input type="hidden" asp-for="Zip" />
+                  <input type="hidden" asp-for="Created" />
+                  <input type="hidden" asp-for="IsClosed" />
+                  <input type="hidden" asp-for="Callback" />
+                  <input type="hidden" asp-for="PriorityId" />
+                  <input type="hidden" asp-for="CallTypeId" />
+                  <input type="hidden" asp-for="StatusId" />
+                  <input type="hidden" asp-for="CallTakerId" />
+                  <input type="hidden" asp-for="DispatcherId" />
+                  <input type="hidden" asp-for="PtAge" />
+                  <input type="hidden" asp-for="PtSex" />
+                  <input type="hidden" asp-for="PtBreath" />
+                  <input type="hidden" asp-for="PtHistory" />
+                  <input type="hidden" asp-for="PtCon" />
+                  <input type="hidden" asp-for="PrimaryUnitId" />
+                  <button class="btn btn-primary text-black"><b>ASSIST UNIT</b></button>
+               </form>
+            </div>      
+        }
+   </div>
 </div>
 @*INCIDENT NOTES*@
 <div class="card text-white bg-primary mb-3">
-    <div class="card-header">Incident Notes:</div>
-        <div class="card-body">
-            <form asp-action="AddIncidentNote" asp-controller="Incidents" method="post">
-                <input type="hidden" asp-for="Id" name="IncidentId" />
-                @if(Model.DispatcherId == simpleUser.Id || Model.CallTakerId == simpleUser.Id)
-                {
-                <div class="form-group">
-                    <textarea asp-for="@(new IncidentNote().Note)" rows="4" class="form-control" required placeholder="Add Incident Note ..."></textarea>
-                </div>
-                <hr style="width:0%; text-align:left;margin-left:0">
-                    <button class="btn btn-warning text-black"><b>Submit</b></button>
-                <hr style="width:0%; text-align:left;margin-left:0">
-                }
-                else
-                {
-
-                }
-                </form>
-                @foreach(IncidentNote incidentNote in Model.Notes)
-                {
-                    <div>
-                    <span class="text-muted">
-                    @incidentNote.User.FullName - @incidentNote.User.UnitNumber
-                    <small class="float-right">(@incidentNote.Created.ToString("MM/dd/yy - H:mm"))</small>
-                    </span>
-                    <div>
-                    <h5><span class ="text-white"><b>@Html.Raw(incidentNote.Note)</b></span></h5>
-                    </div> 
-                    <hr>
-                    </div>
-                }
-        </div>
-    </div>    
+   <div class="card-header">Incident Notes:</div>
+   <div class="card-body">
+      <form asp-action="AddIncidentNote" asp-controller="Incidents" method="post">
+         <input type="hidden" asp-for="Id" name="IncidentId" />
+         @if(Model.DispatcherId == simpleUser.Id || Model.CallTakerId == simpleUser.Id)
+         {
+         <div class="form-group">
+            <textarea asp-for="@(new IncidentNote().Note)" rows="4" class="form-control" required placeholder="Add Incident Note ..."></textarea>
+         </div>
+         <hr style="width:0%; text-align:left;margin-left:0">
+         <button class="btn btn-warning text-black"><b>Submit</b></button>
+         <hr style="width:0%; text-align:left;margin-left:0">
+         }
+         else
+         {
+         }
+      </form>
+      @foreach(IncidentNote incidentNote in Model.Notes)
+      {
+      <div>
+         <span class="text-muted">
+         @incidentNote.User.FullName - @incidentNote.User.UnitNumber
+         <small class="float-right">(@incidentNote.Created.ToString("MM/dd/yy - H:mm"))</small>
+         </span>
+         <div>
+            <h5><span class ="text-white"><b>@Html.Raw(incidentNote.Note)</b></span></h5>
+         </div>
+         <hr>
+      </div>
+      }
+   </div>
 </div>

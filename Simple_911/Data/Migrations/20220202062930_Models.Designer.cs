@@ -12,7 +12,7 @@ using Simple_911.Data;
 namespace Simple_911.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220201203352_Models")]
+    [Migration("20220202062930_Models")]
     partial class Models
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -217,6 +217,21 @@ namespace Simple_911.Data.Migrations
 
                     b.Property<int>("PriorityId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("PtAge")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PtBreath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PtCon")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PtHistory")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PtSex")
+                        .HasColumnType("text");
 
                     b.Property<string>("State")
                         .IsRequired()
