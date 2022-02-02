@@ -3,137 +3,133 @@
 @inject UserManager<SimpleUser> UserManager
 
 @{
-    ViewData["Title"] = "Index";
-    SimpleUser simpleUser = await UserManager.GetUserAsync(User);
+ViewData["Title"] = "Index";
+SimpleUser simpleUser = await UserManager.GetUserAsync(User);
 }
 
 <h2>Dashboard</h2>
-
 @if(User.IsInRole("Admin") || User.IsInRole("Manager"))
 {
-    <a asp-action="Index"><button type="button" class="btn btn-primary">Show Archives</button></a>   <a asp-action="Create"><button type="button" class="btn btn-primary">New Incident</button></a>
+<a asp-action="Index"><button type="button" class="btn btn-primary">Show Archives</button></a>   <a asp-action="Create"><button type="button" class="btn btn-primary">New Incident</button></a>
 }
 else if(User.IsInRole("Dispatcher") || User.IsInRole("Call Taker"))
 {
-    <a asp-action="Create"><button type="button" class="btn btn-primary">New Incident</button></a>
+<a asp-action="Create"><button type="button" class="btn btn-primary">New Incident</button></a>
 }
-
 <p></p>
-
 <table class="table">
-    <thead>
-        <tr class="table-primary">
-            <th>
-                CREATED
-            </th>
-           <th>
-                ADDRESS
-            </th>
-            <th>
-                CALL TYPE
-            </th>
-            <th>
-                UNIT
-            </th>
-            <th>
-                DEPARTMENT
-            </th>
-            <th>
-                STATUS
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr class="table-secondary">
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.FormattedTime)
-            </td>
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.CallType.Name)
-            </td>
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.PrimaryUnit.UnitNumber)
-            </td>
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.PrimaryUnit.FirstName)
-            </td>
-            <td>
-                    @if(item.Status.Id == 1)
-                    {
-                        <span class="badge bg-dark">@Html.DisplayFor(modelItem => item.Status.Name)</span>
-                    }
-                    else if (item.Status.Id == 2)
-                    {
-                        <span class="badge bg-primary text-muted">@Html.DisplayFor(modelItem => item.Status.Name)</span>
-                    }
-                    else if (item.Status.Id == 3)
-                    {
-                        <span class="badge bg-warning text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
-                    }
-                    else if (item.Status.Id == 4)
-                    {
-                        <span class="badge bg-info text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
-                    }
-                    else if (item.Status.Id == 5)
-                    {
-                        <span class="badge bg-warning text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
-                    }
-                     else if (item.Status.Id == 6)
-                    {
-                        <span class="badge bg-info text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
-                    }
-                    else if (item.Status.Id == 7)
-                    {
-                        <span class="badge bg-success text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
-                    }
-                    else if (item.Status.Id == 8)
-                    {
-                        <span class="badge bg-danger text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
-                    }
-                    else if (item.Status.Id == 9)
-                    {
-                        <span class="badge bg-primary text-muted">@Html.DisplayFor(modelItem => item.Status.Name)</span>
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item.Status.Name)
-                    }
-                    
-            </td>
-            <td>
-                    @if(User.IsInRole("Manager") || User.IsInRole("Admin"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>
-                        <a asp-action="Patient" asp-route-id="@item.Id" class="badge bg-light text-black">PT INFO</a>
-                        <a asp-action="Dispatch" asp-route-id="@item.Id" class="badge bg-light text-black">DISPATCH</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">DELETE</a> 
-                    }
-                    else if(User.IsInRole("Call Taker"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>
-                        <a asp-action="Patient" asp-route-id="@item.Id" class="badge bg-light text-black">PT INFO</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">DELETE</a> 
-                    }
-                    else if (User.IsInRole("Dispatcher"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>
-                        <a asp-action="Dispatch" asp-route-id="@item.Id" class="badge bg-light text-black">DISPATCH</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">DELETE</a>
-                    }
-                    else if(User.IsInRole("Ground Unit"))
-                    {
-                        <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
-                    }
-            </td>
-        </tr>
-}
-    </tbody>
+   <thead>
+      <tr class="table-primary">
+         <th>
+            CREATED
+         </th>
+         <th>
+            ADDRESS
+         </th>
+         <th>
+            CALL TYPE
+         </th>
+         <th>
+            UNIT
+         </th>
+         <th>
+            DEPARTMENT
+         </th>
+         <th>
+            STATUS
+         </th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+      @foreach (var item in Model) {
+      <tr class="table-secondary">
+         <td class="text-black">
+            @Html.DisplayFor(modelItem => item.FormattedTime)
+         </td>
+         <td class="text-black">
+            @Html.DisplayFor(modelItem => item.Address)
+         </td>
+         <td class="text-black">
+            @Html.DisplayFor(modelItem => item.CallType.Name)
+         </td>
+         <td class="text-black">
+            @Html.DisplayFor(modelItem => item.PrimaryUnit.UnitNumber)
+         </td>
+         <td class="text-black">
+            @Html.DisplayFor(modelItem => item.PrimaryUnit.FirstName)
+         </td>
+         <td>
+            @if(item.Status.Id == 1)
+            {
+            <span class="badge bg-dark">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+            }
+            else if (item.Status.Id == 2)
+            {
+            <span class="badge bg-primary text-muted">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+            }
+            else if (item.Status.Id == 3)
+            {
+            <span class="badge bg-warning text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+            }
+            else if (item.Status.Id == 4)
+            {
+            <span class="badge bg-info text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+            }
+            else if (item.Status.Id == 5)
+            {
+            <span class="badge bg-warning text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+            }
+            else if (item.Status.Id == 6)
+            {
+            <span class="badge bg-info text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+            }
+            else if (item.Status.Id == 7)
+            {
+            <span class="badge bg-success text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+            }
+            else if (item.Status.Id == 8)
+            {
+            <span class="badge bg-danger text-black">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+            }
+            else if (item.Status.Id == 9)
+            {
+            <span class="badge bg-primary text-muted">@Html.DisplayFor(modelItem => item.Status.Name)</span>
+            }
+            else
+            {
+            @Html.DisplayFor(modelItem => item.Status.Name)
+            }
+         </td>
+         <td>
+            @if(User.IsInRole("Manager") || User.IsInRole("Admin"))
+            {
+            <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>
+            <a asp-action="Patient" asp-route-id="@item.Id" class="badge bg-light text-black">PT INFO</a>
+            <a asp-action="Dispatch" asp-route-id="@item.Id" class="badge bg-light text-black">DISPATCH</a>
+            <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
+            <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">DELETE</a> 
+            }
+            else if(User.IsInRole("Call Taker"))
+            {
+            <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>
+            <a asp-action="Patient" asp-route-id="@item.Id" class="badge bg-light text-black">PT INFO</a>
+            <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
+            <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">DELETE</a> 
+            }
+            else if (User.IsInRole("Dispatcher"))
+            {
+            <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>
+            <a asp-action="Dispatch" asp-route-id="@item.Id" class="badge bg-light text-black">DISPATCH</a>
+            <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
+            <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">DELETE</a>
+            }
+            else if(User.IsInRole("Ground Unit"))
+            {
+            <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
+            }
+         </td>
+      </tr>
+      }
+   </tbody>
 </table>
