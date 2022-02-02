@@ -36,7 +36,7 @@ namespace Simple_911.Controllers
         }
 
         //GET: DASHBOARD
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker, Ground Unit")]
         public async Task<IActionResult> Dashboard()
         {
             var applicationDbContext = _context.Incidents.Include(i => i.CallTaker).Include(i => i.Dispatcher).Include(i => i.PrimaryUnit).Include(i => i.Priority).Include(i => i.Status).Include(i => i.CallType);
