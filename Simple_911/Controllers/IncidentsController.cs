@@ -120,13 +120,13 @@ namespace Simple_911.Controllers
             {
                 incident.PtSex = "MALE";
             }
-            else if (incident.PtSex.ToUpper() == "F" || incident.PtSex.ToUpper() == "FEMALE" || incident.PtSex.ToUpper() == "W")
+            else if (incident.PtSex.ToUpper() == "F" || incident.PtSex.ToUpper() == "FEMALE" || incident.PtSex.ToUpper() == "W" || incident.PtSex.ToUpper() == "WOMAN")
             {
                 incident.PtSex = "FEMALE";
             }
             else {  }
 
-            if (incident.PtCon.ToUpper() == "Y" || incident.PtCon.ToUpper() == "YES" || incident.PtCon.ToUpper() == "C")
+            if (incident.PtCon.ToUpper() == "Y" || incident.PtCon.ToUpper() == "YES" || incident.PtCon.ToUpper() == "C" || incident.PtCon.ToUpper() == "CONSCIOUS")
             {
                 incident.PtCon = "CONSCIOUS";
             }
@@ -136,13 +136,13 @@ namespace Simple_911.Controllers
             }
             else { }
 
-            if (incident.PtBreath.ToUpper() == "Y" || incident.PtBreath.ToUpper() == "YES" || incident.PtBreath.ToUpper() == "B")
+            if (incident.PtBreath.ToUpper() == "Y" || incident.PtBreath.ToUpper() == "YES" || incident.PtBreath.ToUpper() == "B" || incident.PtBreath.ToUpper() == "BREATHING")
             {
                 incident.PtBreath = "BREATHING";
             }
-            else if (incident.PtBreath.ToUpper() == "N" || incident.PtBreath.ToUpper() == "NO" || incident.PtBreath.ToUpper() == "NOT")
+            else if (incident.PtBreath.ToUpper() == "N" || incident.PtBreath.ToUpper() == "NO" || incident.PtBreath.ToUpper() == "NOT" || incident.PtBreath.ToUpper() == "NOT BREATHING")
             {
-                incident.PtBreath = "UNCONSCIOUS";
+                incident.PtBreath = "NOT BREATHING";
             }
             else { }
 
