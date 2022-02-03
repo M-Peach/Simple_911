@@ -146,6 +146,14 @@ namespace Simple_911.Controllers
             }
             else { }
 
+            if(incident.PtBreath == "NOT BREATHING" && incident.PtCon == "CONSCIOUS")
+            {
+                incident.PtCon = "";
+                incident.PtBreath = "";
+
+                return RedirectToAction(nameof(Patient), new { id = incident.Id });
+            }
+
             _context.Update(incident);
 
             await _context.SaveChangesAsync();
