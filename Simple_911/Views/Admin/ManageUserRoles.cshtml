@@ -12,9 +12,8 @@
         <div class="row gy-2">
             <div class="col-md-12 col">
                 <div class="row col-cols-2 mt-5">
-                    <h1>Dashboard</h1>
                         <div style='text-align:Left'>
-                            <a asp-controller="Admin"  asp-action="CreateRole"><button type="button" class="btn btn-primary text-muted"><b>Create New Role</b></button></a>
+                            <a asp-controller="Admin"  asp-action="CreateRole"><button type="button" class="btn btn-primary text-white"><b>Create New Role</b></button></a>
                             <hr style="width:0%; text-align:right;margin-right:0">
                         </div>
 
@@ -23,7 +22,7 @@
   <div>
     <div class="card text-white bg-primary mb-3" style="max-width: 30rem;">
         <div class="card-body">
-      	    <center><h4 class="text-muted">
+      	    <center><h4 class="text-white">
       	        Edit Roles for: <strong class="text-danger">@member.User.FullName</strong>
       	    	</h4>
       	    	<hr />
@@ -32,12 +31,12 @@
                     <div class="row">
                         <div>
                             <div class="form-group" >
-                                <label asp-for="@member.Roles" class="custom-label text-muted">Select the role you would like to assign @member.User.FirstName:</label>
+                                <label asp-for="@member.Roles" class="custom-label text-white">Select the role you would like to assign @member.User.UnitNumber:</label>
                                 <select asp-for="@member.SelectedRoles" class="form-control" asp-items="@member.Roles" multiple></select>
                                 <hr>
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Assign Role" class="btn btn-warning text-muted" />
+                                <input type="submit" value="Assign Role" class="btn btn-warning text-black" />
                             </div>
                         </div>
                     </div>
