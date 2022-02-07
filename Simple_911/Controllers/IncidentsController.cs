@@ -314,67 +314,50 @@ namespace Simple_911.Controllers
             return View(incident);
         }
 
-        // GET: SUPPORT UNITS
-        [Authorize(Roles = "Admin, Manager, Dispatcher")]
-        public async Task<IActionResult> SupportUnits(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: SUPPORT UNITS
+        //[Authorize(Roles = "Admin, Manager, Dispatcher")]
+        //public async Task<IActionResult> SupportUnits(int id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var incident = await _incidentsService.GetIncidentByIdAsync(id);
-            if (incident == null)
-            {
-                return NotFound();
-            }
-            ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "FullName", incident.CallTakerId);
-            ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "FullName", incident.DispatcherId);
-            ViewData["PrimaryUnitId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.PrimaryUnitId);
-            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", incident.PriorityId);
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
-            ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
-            ViewData["SupportUnits"] = new MultiSelectList(_context.Users, "Id", "UnitNumber", incident.SupportUnits);
-            return View(incident);
-        }
+        //    var incident = await _incidentsService.GetIncidentByIdAsync(id);
+        //    if (incident == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "FullName", incident.CallTakerId);
+        //    ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "FullName", incident.DispatcherId);
+        //    ViewData["PrimaryUnitId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.PrimaryUnitId);
+        //    ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", incident.PriorityId);
+        //    ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
+        //    ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
+        //    ViewData["SupportUnits"] = new MultiSelectList(_context.Users, "Id", "UnitNumber", incident.SupportUnits);
+        //    return View(incident);
+        //}
 
         // POST: SUPPORT UNITS
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Manager, Dispatcher")]
-        public async Task<IActionResult> SupportUnits(int id, [Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,SupportUnits")] Incident incident)
+        public async Task<IActionResult> SupportUnits([Bind("SupportUnits")] SimpleUser units)
         {
-            if (id != incident.Id)
-            {
-                return NotFound();
-            }
 
             try
             {
-
+                Incident incident = await _incidentsService.GetIncidentByIdAsync();
+                incident.SupportUnits.Add(units);
                 _context.Update(incident);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!IncidentExists(incident.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
                     throw;
-                }
             }
-            return RedirectToAction(nameof(Dashboard));
 
-            ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "FullName", incident.CallTakerId);
-            ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "FullName", incident.DispatcherId);
-            ViewData["PrimaryUnitId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.PrimaryUnitId);
-            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", incident.PriorityId);
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
-            ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
-            return View(incident);
+            return View(units);
         }
 
         // INCIDENT NOTES

@@ -94,7 +94,7 @@ namespace Simple_911.Models
 
         public virtual SimpleUser? PrimaryUnit { get; set; }
 
-        public virtual ICollection<SimpleUser> SupportUnits { get; set; } = new HashSet<SimpleUser>();
+        public virtual ICollection<SimpleUser> SupportUnits { get; set; } = new List<SimpleUser>();
 
         public virtual ICollection<IncidentNote> Notes { get; set; } = new HashSet<IncidentNote>();
     }
