@@ -130,6 +130,14 @@ else if (@Model.StatusId == 7)
          <div class="card-header">Patient Information:</div>
          <div class="card-body" style="text-align:center">
             <ul class="list-unstyled">
+                <li>
+                            @foreach(SimpleUser unit in Model.SupportUnits)
+                            {
+                            @Html.Raw(unit.UnitNumber)
+
+                            }
+                    @Model.SupportUnits
+                </li>
                @if(Model.PtAge == null || Model.PtSex == null)
                {
                }
