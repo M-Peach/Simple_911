@@ -26,26 +26,11 @@
         <form asp-action="Dispatch">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="Callback" />
-            <input type="hidden" asp-for="CallTakerId" />
-            <input type="hidden" asp-for="Created" />
-            <input type="hidden" asp-for="Address" />
-            <input type="hidden" asp-for="City" />
-            <input type="hidden" asp-for="State" />
-            <input type="hidden" asp-for="Zip" />
-            <input type="hidden" asp-for="PriorityId" />
-            <input type="hidden" asp-for="CallTypeId" />
-            <input type="hidden" asp-for="Created" />
-            <input type="hidden" asp-for="PtSex" />
-            <input type="hidden" asp-for="PtAge" />
-            <input type="hidden" asp-for="PtBreath" />
-            <input type="hidden" asp-for="PtCon" />
-            <input type="hidden" asp-for="PtHistory" />
             <div class="form-group">
-                <label asp-for="PrimaryUnitId" class="control-label"></label>
-                <select asp-for="PrimaryUnitId" class="form-control" asp-items="ViewBag.PrimaryUnitId"></select>
-                <span asp-validation-for="PrimaryUnitId" class="text-danger"></span>
-                <p></p>
+                <label asp-for="UnitsId" class="control-label"></label>
+                <select asp-for="UnitsId" class="form-control" asp-items="ViewBag.UnitsId"></select>
+                <span asp-validation-for="UnitsId" class="text-danger"></span>
+               <p></p>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

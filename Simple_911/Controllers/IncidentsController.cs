@@ -28,10 +28,9 @@ namespace Simple_911.Controllers
         }
 
         // GET: Incidents
-        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Incidents.Include(i => i.CallTaker).Include(i => i.Dispatcher).Include(i => i.PrimaryUnit).Include(i => i.Priority).Include(i => i.Status).Include(i => i.CallType);
+            var applicationDbContext = _context.Incidents.Include(i => i.CallTaker).Include(i => i.CallType).Include(i => i.Dispatcher).Include(i => i.Priority).Include(i => i.Status);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -39,12 +38,11 @@ namespace Simple_911.Controllers
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker, Ground Unit")]
         public async Task<IActionResult> Dashboard()
         {
-            var applicationDbContext = _context.Incidents.Include(i => i.CallTaker).Include(i => i.Dispatcher).Include(i => i.PrimaryUnit).Include(i => i.Priority).Include(i => i.Status).Include(i => i.CallType);
+            var applicationDbContext = _context.Incidents.Include(i => i.CallTaker).Include(i => i.Dispatcher).Include(i => i.Priority).Include(i => i.Status).Include(i => i.CallType);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Incidents/Details/5
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker, Ground Unit")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -52,8 +50,13 @@ namespace Simple_911.Controllers
                 return NotFound();
             }
 
-            Incident incident = await _incidentsService.GetIncidentByIdAsync(id.Value);
-
+            var incident = await _context.Incidents
+                .Include(i => i.CallTaker)
+                .Include(i => i.CallType)
+                .Include(i => i.Dispatcher)
+                .Include(i => i.Priority)
+                .Include(i => i.Status)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (incident == null)
             {
                 return NotFound();
@@ -63,11 +66,13 @@ namespace Simple_911.Controllers
         }
 
         // GET: Incidents/Create
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public IActionResult Create()
         {
-            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name");
-            ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name");
+            ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Id");
+            ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Id");
+            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Id");
             return View();
         }
 
@@ -76,93 +81,23 @@ namespace Simple_911.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> Create([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId")] Incident incident)
+        public async Task<IActionResult> Create([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
-            incident.DispatcherId = null;
-
-            incident.PrimaryUnitId = null;
-
-            incident.IsClosed = false;
-
-            SimpleUser user = await _userManager.GetUserAsync(User);
-
-            incident.CallTakerId = user.Id;
-
-            incident.Created = DateTimeOffset.Now;
-
-            incident.StatusId = 1; // "1" is "Pending"
-
-            _context.Add(incident);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Dashboard));
-        }
-
-        // GET: PATIENT
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> Patient(int? id)
-        {
-            Incident incident = await _incidentsService.GetIncidentByIdAsync(id.Value);
-
+            if (ModelState.IsValid)
+            {
+                _context.Add(incident);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "Id", incident.CallTakerId);
+            ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Id", incident.CallTypeId);
+            ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "Id", incident.DispatcherId);
+            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Id", incident.PriorityId);
+            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Id", incident.StatusId);
             return View(incident);
         }
 
-        // POST: PATIENT
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> Patient([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
-        {
-            if (incident.PtSex.ToUpper() == "M" || incident.PtSex.ToUpper() == "MAN" || incident.PtSex.ToUpper() == "MALE")
-            {
-                incident.PtSex = "MALE";
-            }
-            else if (incident.PtSex.ToUpper() == "F" || incident.PtSex.ToUpper() == "FEMALE" || incident.PtSex.ToUpper() == "W" || incident.PtSex.ToUpper() == "WOMAN")
-            {
-                incident.PtSex = "FEMALE";
-            }
-            else {  }
-
-            if (incident.PtCon.ToUpper() == "Y" || incident.PtCon.ToUpper() == "YES" || incident.PtCon.ToUpper() == "C" || incident.PtCon.ToUpper() == "CONSCIOUS")
-            {
-                incident.PtCon = "CONSCIOUS";
-            }
-            else if (incident.PtCon.ToUpper() == "N" || incident.PtCon.ToUpper() == "NO" || incident.PtCon.ToUpper() == "UNC")
-            {
-                incident.PtCon = "UNCONSCIOUS";
-            }
-            else { }
-
-            if (incident.PtBreath.ToUpper() == "Y" || incident.PtBreath.ToUpper() == "YES" || incident.PtBreath.ToUpper() == "B" || incident.PtBreath.ToUpper() == "BREATHING")
-            {
-                incident.PtBreath = "BREATHING";
-            }
-            else if (incident.PtBreath.ToUpper() == "N" || incident.PtBreath.ToUpper() == "NO" || incident.PtBreath.ToUpper() == "NOT" || incident.PtBreath.ToUpper() == "NOT BREATHING")
-            {
-                incident.PtBreath = "NOT BREATHING";
-            }
-            else { }
-
-            if(incident.PtBreath == "NOT BREATHING" && incident.PtCon == "CONSCIOUS")
-            {
-                incident.PtCon = "";
-                incident.PtBreath = "";
-
-                return RedirectToAction(nameof(Patient), new { id = incident.Id });
-            }
-
-            _context.Update(incident);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Dashboard));
-        }
-
         // GET: Incidents/Edit/5
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -175,12 +110,11 @@ namespace Simple_911.Controllers
             {
                 return NotFound();
             }
-            ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "FullName", incident.CallTakerId);
-            ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "FullName", incident.DispatcherId);
-            ViewData["PrimaryUnitId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.PrimaryUnitId);
-            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", incident.PriorityId);
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
-            ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
+            ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "Id", incident.CallTakerId);
+            ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Id", incident.CallTypeId);
+            ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "Id", incident.DispatcherId);
+            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Id", incident.PriorityId);
+            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Id", incident.StatusId);
             return View(incident);
         }
 
@@ -189,14 +123,15 @@ namespace Simple_911.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId")] Incident incident)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
             if (id != incident.Id)
             {
                 return NotFound();
             }
 
+            if (ModelState.IsValid)
+            {
                 try
                 {
                     _context.Update(incident);
@@ -213,37 +148,13 @@ namespace Simple_911.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Dashboard));
-
-            ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "FullName", incident.CallTakerId);
-            ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "FullName", incident.DispatcherId);
-            ViewData["PrimaryUnitId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.PrimaryUnitId);
-            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", incident.PriorityId);
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
-            ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
-            return View(incident);
-        }
-
-        // GET: EMD
-        [Authorize(Roles = "Admin, Manager, Dispatcher")]
-        public async Task<IActionResult> EMD(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
-
-            var incident = await _incidentsService.GetIncidentByIdAsync(id);
-            if (incident == null)
-            {
-                return NotFound();
-            }
-            ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "FullName", incident.CallTakerId);
-            ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "FullName", incident.DispatcherId);
-            ViewData["PrimaryUnitId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.PrimaryUnitId);
-            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", incident.PriorityId);
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
-            ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
+            ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "Id", incident.CallTakerId);
+            ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Id", incident.CallTypeId);
+            ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "Id", incident.DispatcherId);
+            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Id", incident.PriorityId);
+            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Id", incident.StatusId);
             return View(incident);
         }
 
@@ -263,7 +174,7 @@ namespace Simple_911.Controllers
             }
             ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "FullName", incident.CallTakerId);
             ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "FullName", incident.DispatcherId);
-            ViewData["PrimaryUnitId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.PrimaryUnitId);
+            ViewData["UnitsId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.Units);
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", incident.PriorityId);
             ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
             ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
@@ -274,7 +185,7 @@ namespace Simple_911.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Manager, Dispatcher")]
-        public async Task<IActionResult> Dispatch(int id, [Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId")] Incident incident)
+        public async Task<IActionResult> Dispatch(int id, [Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,UnitsId")] Incident incident)
         {
             if (id != incident.Id)
             {
@@ -307,151 +218,11 @@ namespace Simple_911.Controllers
 
             ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "FullName", incident.CallTakerId);
             ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "FullName", incident.DispatcherId);
-            ViewData["PrimaryUnitId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.PrimaryUnitId);
+            ViewData["UnitsId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.Units);
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", incident.PriorityId);
             ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
             ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
             return View(incident);
-        }
-
-        // INCIDENT NOTES
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> AddIncidentNote([Bind("Id,IncidentId,Note,UserId")] IncidentNote incidentNote)
-        {
-            incidentNote.UserId = _userManager.GetUserId(User);
-            incidentNote.Created = DateTimeOffset.Now;
-
-
-            await _incidentsService.AddIncidentNoteAsync(incidentNote);
-
-            Incident incident = await _incidentsService.GetIncidentByIdAsync(incidentNote.IncidentId);
-
-            incident.Notes.Add(incidentNote);
-
-            return RedirectToAction("Details", new { id = incidentNote.IncidentId });
-        }
-
-        // INCIDENT ENROUTE BUTTON
-        [HttpGet]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> Enroute(int id)
-        {
-            Incident incident = await _incidentsService.GetIncidentByIdAsync(id);
-
-            return View(incident);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> Enroute([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
-        {
-            incident.StatusId = 3;
-
-            _context.Update(incident);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Details", new { id = incident.Id });
-        }
-
-        // INCIDENT ONSCENE BUTTON
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> Onscene([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
-        {
-            incident.StatusId = 4;
-
-            _context.Update(incident);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Details", new { id = incident.Id });
-        }
-
-        // INCIDENT TRANSPORTING BUTTON
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> Transporting([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
-        {
-            incident.StatusId = 5;
-
-            _context.Update(incident);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Details", new { id = incident.Id });
-        }
-
-        // INCIDENT AT HOSPITAL BUTTON
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> AtHospital([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
-        {
-            incident.StatusId = 6;
-
-            _context.Update(incident);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Details", new { id = incident.Id });
-        }
-
-        // INCIDENT IN SERVICE BUTTON
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> InService([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
-        {
-            incident.StatusId = 7;
-
-            _context.Update(incident);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Details", new { id = incident.Id });
-        }
-
-        // INCIDENT OOS BUTTON
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> OOS([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
-        {
-            incident.StatusId = 8;
-
-            _context.Update(incident);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Details", new { id = incident.Id });
-        }
-
-        // INCIDENT ASSISTING UNIT BUTTON
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> AssistUnit([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
-        {
-            incident.StatusId = 9;
-
-            _context.Update(incident);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Details", new { id = incident.Id });
         }
 
         // GET: Incidents/Delete/5
@@ -464,8 +235,8 @@ namespace Simple_911.Controllers
 
             var incident = await _context.Incidents
                 .Include(i => i.CallTaker)
+                .Include(i => i.CallType)
                 .Include(i => i.Dispatcher)
-                .Include(i => i.PrimaryUnit)
                 .Include(i => i.Priority)
                 .Include(i => i.Status)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -483,12 +254,14 @@ namespace Simple_911.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var incident = await _context.Incidents.FindAsync(id);
-
-            incident.IsClosed = true;
-
-            _context.Incidents.Update(incident);
+            _context.Incidents.Remove(incident);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Dashboard));
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool IncidentExists(int id)
+        {
+            return _context.Incidents.Any(e => e.Id == id);
         }
 
         // GET: RESTORE
@@ -502,7 +275,6 @@ namespace Simple_911.Controllers
             var incident = await _context.Incidents
                 .Include(i => i.CallTaker)
                 .Include(i => i.Dispatcher)
-                .Include(i => i.PrimaryUnit)
                 .Include(i => i.Priority)
                 .Include(i => i.Status)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -528,9 +300,6 @@ namespace Simple_911.Controllers
             return RedirectToAction(nameof(Dashboard));
         }
 
-        private bool IncidentExists(int id)
-        {
-            return _context.Incidents.Any(e => e.Id == id);
-        }
     }
 }
+

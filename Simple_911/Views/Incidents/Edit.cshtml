@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h>Edit</h>
+<h1>Edit</h1>
 
 <h4>Incident</h4>
 <hr />
@@ -34,6 +34,16 @@
                 <span asp-validation-for="Zip" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Created" class="control-label"></label>
+                <input asp-for="Created" class="form-control" />
+                <span asp-validation-for="Created" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsClosed" /> @Html.DisplayNameFor(model => model.IsClosed)
+                </label>
+            </div>
+            <div class="form-group">
                 <label asp-for="Callback" class="control-label"></label>
                 <input asp-for="Callback" class="form-control" />
                 <span asp-validation-for="Callback" class="text-danger"></span>
@@ -45,7 +55,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="CallTypeId" class="control-label"></label>
-                <select asp-for="CallTypeId" class="form-control" asp-items="ViewBag.CallTypeId"></select> 
+                <select asp-for="CallTypeId" class="form-control" asp-items="ViewBag.CallTypeId"></select>
                 <span asp-validation-for="CallTypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -64,9 +74,29 @@
                 <span asp-validation-for="DispatcherId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PrimaryUnitId" class="control-label"></label>
-                <select asp-for="PrimaryUnitId" class="form-control" asp-items="ViewBag.PrimaryUnitId"></select>
-                <span asp-validation-for="PrimaryUnitId" class="text-danger"></span>
+                <label asp-for="PtAge" class="control-label"></label>
+                <input asp-for="PtAge" class="form-control" />
+                <span asp-validation-for="PtAge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PtSex" class="control-label"></label>
+                <input asp-for="PtSex" class="form-control" />
+                <span asp-validation-for="PtSex" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PtCon" class="control-label"></label>
+                <input asp-for="PtCon" class="form-control" />
+                <span asp-validation-for="PtCon" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PtBreath" class="control-label"></label>
+                <input asp-for="PtBreath" class="form-control" />
+                <span asp-validation-for="PtBreath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PtHistory" class="control-label"></label>
+                <input asp-for="PtHistory" class="form-control" />
+                <span asp-validation-for="PtHistory" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

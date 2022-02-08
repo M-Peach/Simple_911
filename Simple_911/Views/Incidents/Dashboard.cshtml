@@ -53,12 +53,12 @@ else if(User.IsInRole("Dispatcher") || User.IsInRole("Call Taker"))
          <td class="text-black">
             @Html.DisplayFor(modelItem => item.CallType.Name)
          </td>
-         <td class="text-black">
+@*         <td class="text-black">
             @Html.DisplayFor(modelItem => item.PrimaryUnit.UnitNumber)
          </td>
          <td class="text-black">
             @Html.DisplayFor(modelItem => item.PrimaryUnit.FirstName)
-         </td>
+         </td>*@
          <td>
             @if(item.Status.Id == 1)
             {

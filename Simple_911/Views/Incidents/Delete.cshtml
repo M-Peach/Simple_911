@@ -4,42 +4,13 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Archive</h1>
+<h1>Delete</h1>
 
-<h3>Are you sure you want to archive this?</h3>
+<h3>Are you sure you want to delete this?</h3>
 <div>
+    <h4>Incident</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CallType.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CallType.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PrimaryUnit.UnitNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrimaryUnit.UnitNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Priority.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Priority.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Callback)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Callback)
-        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Address)
         </dt>
@@ -77,22 +48,76 @@
             @Html.DisplayFor(model => model.IsClosed)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Dispatcher)
+            @Html.DisplayNameFor(model => model.Callback)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Dispatcher.FullName)
+            @Html.DisplayFor(model => model.Callback)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PtAge)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PtAge)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PtSex)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PtSex)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PtCon)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PtCon)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PtBreath)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PtBreath)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PtHistory)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PtHistory)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Priority)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Priority.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CallType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CallType.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status.Id)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CallTaker)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CallTaker.FullName)
+            @Html.DisplayFor(model => model.CallTaker.Id)
         </dd>
-    </dl>   
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Dispatcher)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Dispatcher.Id)
+        </dd>
+    </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Dashboard">Back to List</a>
+        <a asp-action="Index">Back to List</a>
     </form>
 </div>

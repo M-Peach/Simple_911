@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<Simple_911.Models.Incident>
+
 @{
-    ViewData["Title"] = "Incident Archive";
+    ViewData["Title"] = "Index";
 }
 
+<h1>Index</h1>
 
-<h1>Archive</h1>
-
-<p style="text-align:right">
-    <a asp-action="Dashboard"><button type="button" class="btn btn-primary">Back to Dashboard</button></a>
+<p>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
-        <tr class="table-primary">
+        <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Address)
             </th>
@@ -19,13 +19,40 @@
                 @Html.DisplayNameFor(model => model.City)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zip)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Created)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CallTypeId)
+                @Html.DisplayNameFor(model => model.IsClosed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Callback)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PtAge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PtSex)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PtCon)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PtBreath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PtHistory)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Priority)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CallType)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
@@ -36,59 +63,67 @@
             <th>
                 @Html.DisplayNameFor(model => model.Dispatcher)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrimaryUnit)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsClosed)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr class="table-secondary">
-            <td class="text-black">
+        <tr>
+            <td>
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
-            <td class="text-black">
+            <td>
                 @Html.DisplayFor(modelItem => item.City)
             </td>
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.FormattedTime)
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
             </td>
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.CallType.Name)
+            <td>
+                @Html.DisplayFor(modelItem => item.Zip)
             </td>
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.Priority.Name)
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
             </td>
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.Status.Name)
-            </td>
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.CallTaker.FullName)
-            </td>
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.Dispatcher.FullName)
-            </td>
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.PrimaryUnit.UnitNumber)
-            </td>
-            <td class="text-black">
+            <td>
                 @Html.DisplayFor(modelItem => item.IsClosed)
             </td>
             <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>  
-                        <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
-                @if(@item.IsClosed)
-                {
-                <a asp-action="Restore" asp-route-id="@item.Id" class="badge bg-light text-black">RESTORE</a>
-                }
-                else
-                {
-                <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">ARCHIVE</a>
-                }
+                @Html.DisplayFor(modelItem => item.Callback)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PtAge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PtSex)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PtCon)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PtBreath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PtHistory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Priority.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CallType.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CallTaker.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dispatcher.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

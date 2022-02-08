@@ -63,9 +63,6 @@ namespace Simple_911.Models
         [Display(Name = "Dispatcher")]
         public string? DispatcherId { get; set; }
 
-        [Display(Name = "Primary Unit")]
-        public string? PrimaryUnitId { get; set; }
-
         [Display(Name = "Patient Age")]
         public string? PtAge { get; set; }
 
@@ -92,9 +89,7 @@ namespace Simple_911.Models
 
         public virtual SimpleUser? Dispatcher { get; set; }
 
-        public virtual SimpleUser? PrimaryUnit { get; set; }
-
-        public virtual ICollection<SimpleUser> SupportUnits { get; set; } = new HashSet<SimpleUser>();
+        public virtual ICollection<IncidentUnit> Units { get; set; } = new HashSet<IncidentUnit>();
 
         public virtual ICollection<IncidentNote> Notes { get; set; } = new HashSet<IncidentNote>();
     }

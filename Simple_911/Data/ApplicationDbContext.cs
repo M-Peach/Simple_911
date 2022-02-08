@@ -15,5 +15,6 @@ namespace Simple_911.Data
         public DbSet<Priority> Priorities { get; set; }
         public DbSet<CallType> CallTypes { get; set; }
         public DbSet<Status> Statuses { get; set; }
+        public DbSet<Simple_911.Models.IncidentUnit> IncidentUnit { get; set; }
     }
 }
