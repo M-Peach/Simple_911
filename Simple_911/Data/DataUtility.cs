@@ -132,7 +132,7 @@ namespace Simple_911.Data
 
         public static async Task SeedDefaultUsersAsync(UserManager<SimpleUser> userManager)
         {
-            //Seed Default Admin User
+            //Seed Default Admin
             var defaultUser = new SimpleUser
             {
                 UnitNumber = "ADMIN",
@@ -153,6 +153,110 @@ namespace Simple_911.Data
             {
                 Console.WriteLine("*************  ERROR  *************");
                 Console.WriteLine("Error Seeding Default Admin User.");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("***********************************");
+                throw;
+            }
+
+            //Seed Default Manager
+            defaultUser = new SimpleUser
+            {
+                UnitNumber = "MANAGER",
+                UserName = "MANAGER",
+                FirstName = "Hank",
+                LastName = "Ralford",
+            };
+            try
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "Abc&123!");
+                    await userManager.AddToRoleAsync(defaultUser, "Manager");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*************  ERROR  *************");
+                Console.WriteLine("Error Seeding Default Manager.");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("***********************************");
+                throw;
+            }
+
+            //Seed Default Dispatcher
+            defaultUser = new SimpleUser
+            {
+                UnitNumber = "DIS01",
+                UserName = "DIS01",
+                FirstName = "Joe",
+                LastName = "Shmoe",
+            };
+            try
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "Abc&123!");
+                    await userManager.AddToRoleAsync(defaultUser, "Dispatcher");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*************  ERROR  *************");
+                Console.WriteLine("Error Seeding Default Dispatcher.");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("***********************************");
+                throw;
+            }
+
+            //Seed Default Call Taker
+            defaultUser = new SimpleUser
+            {
+                UnitNumber = "CT01",
+                UserName = "CT01",
+                FirstName = "Jane",
+                LastName = "Doe",
+            };
+            try
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "Abc&123!");
+                    await userManager.AddToRoleAsync(defaultUser, "Call Taker");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*************  ERROR  *************");
+                Console.WriteLine("Error Seeding Default Call Taker.");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("***********************************");
+                throw;
+            }
+
+            //Seed Default Ground Unit
+            defaultUser = new SimpleUser
+            {
+                UnitNumber = "M94",
+                UserName = "M94",
+                FirstName = "MAUMEE",
+                LastName = "MEDIC94",
+            };
+            try
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "Abc&123!");
+                    await userManager.AddToRoleAsync(defaultUser, "Ground Unit");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*************  ERROR  *************");
+                Console.WriteLine("Error Seeding Default Ground Unit.");
                 Console.WriteLine(ex.Message);
                 Console.WriteLine("***********************************");
                 throw;
