@@ -26,6 +26,8 @@ builder.Services.AddScoped<ITIncidentsService, IncidentsService>();
 
 var app = builder.Build();
 
+await DataUtility.ManageDataAsync(app);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

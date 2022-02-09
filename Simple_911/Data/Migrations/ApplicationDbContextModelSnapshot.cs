@@ -290,6 +290,29 @@ namespace Simple_911.Data.Migrations
                     b.ToTable("IncidentNotes");
                 });
 
+            modelBuilder.Entity("Simple_911.Models.IncidentSupport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IncidentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SupportUnitId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IncidentId");
+
+                    b.HasIndex("SupportUnitId");
+
+                    b.ToTable("IncidentSupports");
+                });
+
             modelBuilder.Entity("Simple_911.Models.Priority", b =>
                 {
                     b.Property<int>("Id")
@@ -329,9 +352,6 @@ namespace Simple_911.Data.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int?>("IncidentId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -375,8 +395,6 @@ namespace Simple_911.Data.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IncidentId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -522,18 +540,28 @@ namespace Simple_911.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Simple_911.Models.SimpleUser", b =>
+            modelBuilder.Entity("Simple_911.Models.IncidentSupport", b =>
                 {
-                    b.HasOne("Simple_911.Models.Incident", null)
-                        .WithMany("SupportUnits")
-                        .HasForeignKey("IncidentId");
+                    b.HasOne("Simple_911.Models.Incident", "Incident")
+                        .WithMany("Support")
+                        .HasForeignKey("IncidentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Simple_911.Models.SimpleUser", "SupportUnit")
+                        .WithMany()
+                        .HasForeignKey("SupportUnitId");
+
+                    b.Navigation("Incident");
+
+                    b.Navigation("SupportUnit");
                 });
 
             modelBuilder.Entity("Simple_911.Models.Incident", b =>
                 {
                     b.Navigation("Notes");
 
-                    b.Navigation("SupportUnits");
+                    b.Navigation("Support");
                 });
 #pragma warning restore 612, 618
         }

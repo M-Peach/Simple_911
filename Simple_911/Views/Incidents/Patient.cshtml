@@ -34,24 +34,24 @@
             <hr />
             <div class="form-group">
                 <label class="control-label">IS THE PATIENT MALE OR FEMALE?</label>
-                <input asp-for="PtSex" class="form-control" />
+                <select asp-for="PtSex" class="form-control" asp-items="ViewBag.PtSex"></select>
                 <span asp-validation-for="PtSex" class="text-danger"></span>
             </div>
             <hr />
             <div class="form-group">
                 <label class="control-label">IS THE PATIENT AWAKE AND CONSCIOUS?</label>
-                <input asp-for="PtCon" class="form-control" />
+                <select asp-for="PtCon" class="form-control" asp-items="ViewBag.PtCon"></select>
                 <span asp-validation-for="PtCon" class="text-danger"></span>
             </div>
             <hr />
             <div class="form-group">
                 <label class="control-label">IS THE PATIENT BREATHING?</label>
-                <input asp-for="PtBreath" class="form-control" />
-                <span asp-validation-for="PtBreath" class="text-danger"></span>
+                <select asp-for="PtBreath" class="form-control" asp-items="ViewBag.PtBreath"></select>
+                <span asp-validation-for="PtCon" class="text-danger"></span>
             </div>
             <hr />
             <div class="form-group">
-                <label class="control-label"><p>HAS THIS HAPPEND BEFORE?</p><p>DOES THE PATIENT HAVE A HISTORY OF THIS?</p></label>
+                <label class="control-label"><p>DOES THE PATIENT HAVE A HISTORY OF THIS?</p></label>
                 <input asp-for="PtHistory" class="form-control" />
                 <span asp-validation-for="PtHistory" class="text-danger"></span>
             </div>
