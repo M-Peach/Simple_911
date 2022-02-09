@@ -10,6 +10,8 @@ namespace Simple_911.Services.Interfaces
 
         public Task AddIncidentNoteAsync(IncidentNote note);
 
+        public Task AddIncidentSupportAsync(IncidentSupport support);
+
         public Task<List<Incident>> GetAllIncidentsByTypeAsync(string typeName);
 
         public Task<int?> LookupIncidentTypeIdAsync(string typeName);

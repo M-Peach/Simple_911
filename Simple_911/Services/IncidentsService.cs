@@ -28,6 +28,21 @@ namespace Simple_911.Services
             }
         }
 
+        public async Task AddIncidentSupportAsync(IncidentSupport support)
+        {
+            try
+            {
+                await _context.AddAsync(support);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<List<Incident>> GetAllIncidentsAsync()
         {
             try
@@ -39,6 +54,7 @@ namespace Simple_911.Services
                     .Include(t => t.Priority)
                     .Include(t => t.CallType)
                     .Include(t => t.Status)
+                    .Include(t => t.Support)
                     .ToListAsync();
 
                 return incidents;

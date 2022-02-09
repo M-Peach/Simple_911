@@ -77,7 +77,7 @@ namespace Simple_911.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> Create([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId")] Incident incident)
+        public async Task<IActionResult> Create([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
             incident.DispatcherId = null;
 
@@ -104,6 +104,13 @@ namespace Simple_911.Controllers
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> Patient(int? id)
         {
+            var ptSex = new List<string> { "", "MALE", "FEMALE", };
+            var ptCon = new List<string> { "", "CONSCIOUS", "UNCONSCIOUS", };
+            var ptBreath = new List<string> { "", "BREATHING", "NOT BREATHING", };
+
+            ViewData["PtSex"] = new SelectList(ptSex);
+            ViewData["PtCon"] = new SelectList(ptCon);
+            ViewData["PtBreath"] = new SelectList(ptBreath);
             Incident incident = await _incidentsService.GetIncidentByIdAsync(id.Value);
 
             return View(incident);
@@ -114,51 +121,20 @@ namespace Simple_911.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> Patient([Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
+        public async Task<IActionResult> Patient(int? id,[Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
-            if (incident.PtSex.ToUpper() == "M" || incident.PtSex.ToUpper() == "MAN" || incident.PtSex.ToUpper() == "MALE")
-            {
-                incident.PtSex = "MALE";
-            }
-            else if (incident.PtSex.ToUpper() == "F" || incident.PtSex.ToUpper() == "FEMALE" || incident.PtSex.ToUpper() == "W" || incident.PtSex.ToUpper() == "WOMAN")
-            {
-                incident.PtSex = "FEMALE";
-            }
-            else {  }
-
-            if (incident.PtCon.ToUpper() == "Y" || incident.PtCon.ToUpper() == "YES" || incident.PtCon.ToUpper() == "C" || incident.PtCon.ToUpper() == "CONSCIOUS")
-            {
-                incident.PtCon = "CONSCIOUS";
-            }
-            else if (incident.PtCon.ToUpper() == "N" || incident.PtCon.ToUpper() == "NO" || incident.PtCon.ToUpper() == "UNC")
-            {
-                incident.PtCon = "UNCONSCIOUS";
-            }
-            else { }
-
-            if (incident.PtBreath.ToUpper() == "Y" || incident.PtBreath.ToUpper() == "YES" || incident.PtBreath.ToUpper() == "B" || incident.PtBreath.ToUpper() == "BREATHING")
-            {
-                incident.PtBreath = "BREATHING";
-            }
-            else if (incident.PtBreath.ToUpper() == "N" || incident.PtBreath.ToUpper() == "NO" || incident.PtBreath.ToUpper() == "NOT" || incident.PtBreath.ToUpper() == "NOT BREATHING")
-            {
-                incident.PtBreath = "NOT BREATHING";
-            }
-            else { }
-
-            if(incident.PtBreath == "NOT BREATHING" && incident.PtCon == "CONSCIOUS")
-            {
-                incident.PtCon = "";
-                incident.PtBreath = "";
-
-                return RedirectToAction(nameof(Patient), new { id = incident.Id });
-            }
-
             _context.Update(incident);
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Dashboard));
+            if(incident.PrimaryUnit != null)
+            {
+                return RedirectToAction("Details", new { id = id });
+            }
+            else
+            {
+                return RedirectToAction(nameof(Dashboard));
+            }
         }
 
         // GET: Incidents/Edit/5
@@ -190,7 +166,7 @@ namespace Simple_911.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId")] Incident incident)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
             if (id != incident.Id)
             {
@@ -264,6 +240,7 @@ namespace Simple_911.Controllers
             ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "FullName", incident.CallTakerId);
             ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "FullName", incident.DispatcherId);
             ViewData["PrimaryUnitId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.PrimaryUnitId);
+            ViewData["SupportUnits"] = new MultiSelectList(_context.Users, "Id", "UnitNumber");
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", incident.PriorityId);
             ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
             ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
@@ -274,7 +251,7 @@ namespace Simple_911.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Manager, Dispatcher")]
-        public async Task<IActionResult> Dispatch(int id, [Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId")] Incident incident)
+        public async Task<IActionResult> Dispatch(int id, [Bind("Id,Address,City,State,Zip,Created,IsClosed,Callback,PriorityId,CallTypeId,StatusId,CallTakerId,DispatcherId,PrimaryUnitId,PtAge,PtSex,PtCon,PtBreath,PtHistory")] Incident incident)
         {
             if (id != incident.Id)
             {
@@ -288,6 +265,7 @@ namespace Simple_911.Controllers
                 SimpleUser user = await _userManager.GetUserAsync(User);
 
                 incident.DispatcherId = user.Id;
+
 
                 _context.Update(incident);
                 await _context.SaveChangesAsync();
@@ -308,10 +286,30 @@ namespace Simple_911.Controllers
             ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "FullName", incident.CallTakerId);
             ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "FullName", incident.DispatcherId);
             ViewData["PrimaryUnitId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.PrimaryUnitId);
+            ViewData["SupportUnits"] = new MultiSelectList(_context.Users, "Id", "UnitNumber");
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", incident.PriorityId);
             ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
             ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
             return View(incident);
+        }
+
+        // INCIDENT SUPPORT UNITS
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
+        public async Task<IActionResult> AddSupportUnit([Bind("Id,IncidentId,SupportUnitId")] IncidentSupport incidentSupport)
+        {
+            ViewData["SupportUnits"] = new MultiSelectList(_context.Users, "Id", "UnitNumber");
+
+            await _incidentsService.AddIncidentSupportAsync(incidentSupport);
+
+            Incident incident = await _incidentsService.GetIncidentByIdAsync(incidentSupport.IncidentId);
+
+            incident.Support.Add(incidentSupport);
+
+            return RedirectToAction("Details", new { id = incidentSupport.IncidentId });
+
         }
 
         // INCIDENT NOTES

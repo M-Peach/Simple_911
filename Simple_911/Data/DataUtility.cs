@@ -21,7 +21,7 @@ namespace Simple_911.Data
             await dbContextSvc.Database.MigrateAsync();
 
 
-            //Custom  Bug Tracker Seed Methods
+            //Seed Methods
             await SeedRolesAsync(roleManagerSvc);
             await SeedDefaultPriorityAsync(dbContextSvc);
             await SeedDefaultStatusAsync(dbContextSvc);
@@ -136,6 +136,7 @@ namespace Simple_911.Data
             var defaultUser = new SimpleUser
             {
                 UnitNumber = "ADMIN",
+                UserName = "ADMIN",
                 FirstName = "Mike",
                 LastName = "Peachman",
             };

@@ -12,7 +12,20 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+                  <input type="hidden" asp-for="Id" />
+                  <input type="hidden" asp-for="Created" />
+                  <input type="hidden" asp-for="IsClosed" />
+                  <input type="hidden" asp-for="PriorityId" />
+                  <input type="hidden" asp-for="CallTypeId" />
+                  <input type="hidden" asp-for="StatusId" />
+                  <input type="hidden" asp-for="CallTakerId" />
+                  <input type="hidden" asp-for="DispatcherId" />
+                  <input type="hidden" asp-for="PtAge" />
+                  <input type="hidden" asp-for="PtSex" />
+                  <input type="hidden" asp-for="PtBreath" />
+                  <input type="hidden" asp-for="PtHistory" />
+                  <input type="hidden" asp-for="PtCon" />
+                  <input type="hidden" asp-for="PrimaryUnitId" />
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
