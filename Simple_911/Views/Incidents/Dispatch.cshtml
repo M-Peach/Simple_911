@@ -53,25 +53,9 @@ SimpleUser simpleUser = await UserManager.GetUserAsync(User);
                         <div>
                            <form asp-action="AddSupportUnit" asp-controller="Incidents" method="post">
                               <input type="hidden" asp-for="Id" name="IncidentId" />
-                              <input type="hidden" asp-for="Id" />
-                              <input type="hidden" asp-for="Callback" />
-                              <input type="hidden" asp-for="CallTakerId" />
-                              <input type="hidden" asp-for="Created" />
-                              <input type="hidden" asp-for="Address" />
-                              <input type="hidden" asp-for="City" />
-                              <input type="hidden" asp-for="State" />
-                              <input type="hidden" asp-for="Zip" />
-                              <input type="hidden" asp-for="PriorityId" />
-                              <input type="hidden" asp-for="CallTypeId" />
-                              <input type="hidden" asp-for="Created" />
-                              <input type="hidden" asp-for="PtSex" />
-                              <input type="hidden" asp-for="PtAge" />
-                              <input type="hidden" asp-for="PtBreath" />
-                              <input type="hidden" asp-for="PtCon" />
-                              <input type="hidden" asp-for="PtHistory" />
                               <div class="form-group">
                                  <label class="control-label">Attach a Unit:</label>
-                                 <select asp-for="@(new IncidentSupport().SupportUnitId)" class="form-control" asp-items="ViewBag.SupportUnits"></></select>
+                                 <select asp-for="@(new IncidentSupport().SupportUnitId)" class="form-control" asp-items="ViewBag.ABC"></select>   
                                  <p></p>
                               </div>
                               <div class="form-group">
@@ -107,6 +91,10 @@ SimpleUser simpleUser = await UserManager.GetUserAsync(User);
                            @*Dispatcher*@
                            <li>
                               <h6><strong>Dispatcher:</strong> <span class="">  @simpleUser.FullName</span></h6>
+                           </li>
+                           @*Address*@
+                           <li>
+                              <h6><strong>Address:</strong> <span class="">  @Model.Address, @Model.City</span></h6>
                            </li>
                         </ul>
                      </div>

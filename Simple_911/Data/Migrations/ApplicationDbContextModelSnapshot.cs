@@ -302,6 +302,7 @@ namespace Simple_911.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("SupportUnitId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -543,14 +544,16 @@ namespace Simple_911.Data.Migrations
             modelBuilder.Entity("Simple_911.Models.IncidentSupport", b =>
                 {
                     b.HasOne("Simple_911.Models.Incident", "Incident")
-                        .WithMany("Support")
+                        .WithMany("Supports")
                         .HasForeignKey("IncidentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Simple_911.Models.SimpleUser", "SupportUnit")
                         .WithMany()
-                        .HasForeignKey("SupportUnitId");
+                        .HasForeignKey("SupportUnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Incident");
 
@@ -561,7 +564,7 @@ namespace Simple_911.Data.Migrations
                 {
                     b.Navigation("Notes");
 
-                    b.Navigation("Support");
+                    b.Navigation("Supports");
                 });
 #pragma warning restore 612, 618
         }

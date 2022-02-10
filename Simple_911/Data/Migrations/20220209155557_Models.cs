@@ -297,7 +297,7 @@ namespace Simple_911.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     IncidentId = table.Column<int>(type: "integer", nullable: false),
-                    SupportUnitId = table.Column<string>(type: "text", nullable: true)
+                    SupportUnitId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -306,7 +306,8 @@ namespace Simple_911.Data.Migrations
                         name: "FK_IncidentSupports_AspNetUsers_SupportUnitId",
                         column: x => x.SupportUnitId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_IncidentSupports_Incidents_IncidentId",
                         column: x => x.IncidentId,

@@ -32,6 +32,10 @@ namespace Simple_911.Services
         {
             try
             {
+                SimpleUser user = _context.Users.Find(support.SupportUnitId);
+
+                support.SupportUnit = user;
+
                 await _context.AddAsync(support);
                 await _context.SaveChangesAsync();
 
@@ -54,7 +58,8 @@ namespace Simple_911.Services
                     .Include(t => t.Priority)
                     .Include(t => t.CallType)
                     .Include(t => t.Status)
-                    .Include(t => t.Support)
+                    .Include(t => t.Supports)
+                    .Include(t => t.PrimaryUnit)
                     .ToListAsync();
 
                 return incidents;
@@ -79,6 +84,7 @@ namespace Simple_911.Services
                     .Include(t => t.Priority)
                     .Include(t => t.CallType)
                     .Include(t => t.Status)
+                    .Include(t => t.PrimaryUnit)
                     .Where(t => t.CallTypeId == typeId)
                     .ToListAsync();
 

@@ -96,6 +96,6 @@ namespace Simple_911.Models
 
         public virtual ICollection<IncidentNote> Notes { get; set; } = new HashSet<IncidentNote>();
 
-        public virtual ICollection<IncidentSupport> Support { get; set; } = new HashSet<IncidentSupport>();
+        public virtual ICollection<IncidentSupport> Supports { get; set; } = new HashSet<IncidentSupport>();
     }
 }
