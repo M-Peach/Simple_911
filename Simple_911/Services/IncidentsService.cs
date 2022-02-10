@@ -27,30 +27,15 @@ namespace Simple_911.Services
                 throw;
             }
         }
-   
-        public async Task<List<IncidentSupport>> GetAllIncidentSupportsAsync()
-        {
-            try
-            {
-                List<IncidentSupport> supports = await _context.IncidentSupports
-                    .Include(t => t.SupportUnit)
-                    .Include(t => t.SupportUnitId)
-                    .ToListAsync();
-
-                return supports;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
 
         public async Task AddIncidentSupportAsync(IncidentSupport support)
         {
             try
             {
-                
+                SimpleUser user = _context.Users.Find(support.SupportUnitId);
+
+                support.SupportUnit = user;
+
                 await _context.AddAsync(support);
                 await _context.SaveChangesAsync();
 

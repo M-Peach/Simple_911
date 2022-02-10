@@ -54,6 +54,19 @@ namespace Simple_911.Controllers
 
             Incident incident = await _incidentsService.GetIncidentByIdAsync(id.Value);
 
+            if(incident.Supports.Count >= 1)
+            {
+                foreach(var s in incident.Supports)
+                {
+                    SimpleUser user = _context.Users.Find(s.SupportUnitId);
+
+                    s.SupportUnit = user;
+
+                    _context.SaveChangesAsync();
+                }
+            }
+
+
             if (incident == null)
             {
                 return NotFound();
@@ -308,7 +321,11 @@ namespace Simple_911.Controllers
 
             incident.Supports.Add(incidentSupport);
 
-            return RedirectToAction("Details", new { id = incidentSupport.IncidentId });
+            await _context.SaveChangesAsync();
+
+
+
+            return RedirectToAction(nameof(Dashboard));
         }
 
         // INCIDENT NOTES

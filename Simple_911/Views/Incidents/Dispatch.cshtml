@@ -51,11 +51,11 @@ SimpleUser simpleUser = await UserManager.GetUserAsync(User);
                               </div>
                            </form>
                         <div>
-                           <form asp-action="AddSupportUnit" asp-controller="Incidents" method="post"> />
+                           <form asp-action="AddSupportUnit" asp-controller="Incidents" method="post">
                               <input type="hidden" asp-for="Id" name="IncidentId" />
                               <div class="form-group">
                                  <label class="control-label">Attach a Unit:</label>
-                                 <select asp-for="@(new IncidentSupport().SupportUnitId)" class="form-control" asp-items="ViewBag.ABC" multiple></select>   
+                                 <select asp-for="@(new IncidentSupport().SupportUnitId)" class="form-control" asp-items="ViewBag.ABC"></select>   
                                  <p></p>
                               </div>
                               <div class="form-group">
