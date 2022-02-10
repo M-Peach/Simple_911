@@ -168,7 +168,7 @@ namespace Simple_911.Data
             };
             try
             {
-                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                var user = await userManager.FindByNameAsync(defaultUser.UnitNumber);
                 if (user == null)
                 {
                     await userManager.CreateAsync(defaultUser, "Abc&123!");
@@ -194,7 +194,7 @@ namespace Simple_911.Data
             };
             try
             {
-                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                var user = await userManager.FindByNameAsync(defaultUser.UnitNumber);
                 if (user == null)
                 {
                     await userManager.CreateAsync(defaultUser, "Abc&123!");
@@ -220,7 +220,7 @@ namespace Simple_911.Data
             };
             try
             {
-                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                var user = await userManager.FindByNameAsync(defaultUser.UnitNumber);
                 if (user == null)
                 {
                     await userManager.CreateAsync(defaultUser, "Abc&123!");
@@ -246,7 +246,7 @@ namespace Simple_911.Data
             };
             try
             {
-                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                var user = await userManager.FindByNameAsync(defaultUser.UnitNumber);
                 if (user == null)
                 {
                     await userManager.CreateAsync(defaultUser, "Abc&123!");

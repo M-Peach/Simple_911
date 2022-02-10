@@ -240,7 +240,7 @@ namespace Simple_911.Controllers
             ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "FullName", incident.CallTakerId);
             ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "FullName", incident.DispatcherId);
             ViewData["PrimaryUnitId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.PrimaryUnitId);
-            ViewData["SupportUnits"] = new MultiSelectList(_context.Users, "Id", "UnitNumber");
+            ViewData["ABC"] = new SelectList(_context.Users, "Id", "UnitNumber");
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", incident.PriorityId);
             ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
             ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
@@ -286,7 +286,7 @@ namespace Simple_911.Controllers
             ViewData["CallTakerId"] = new SelectList(_context.Users, "Id", "FullName", incident.CallTakerId);
             ViewData["DispatcherId"] = new SelectList(_context.Users, "Id", "FullName", incident.DispatcherId);
             ViewData["PrimaryUnitId"] = new SelectList(_context.Users, "Id", "UnitNumber", incident.PrimaryUnitId);
-            ViewData["SupportUnits"] = new MultiSelectList(_context.Users, "Id", "UnitNumber");
+            ViewData["ABC"] = new SelectList(_context.Users, "Id", "UnitNumber");
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", incident.PriorityId);
             ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", incident.StatusId);
             ViewData["CallTypeId"] = new SelectList(_context.CallTypes, "Id", "Name", incident.CallTypeId);
@@ -297,19 +297,18 @@ namespace Simple_911.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
+        [Authorize(Roles = "Admin, Manager, Dispatcher")]
         public async Task<IActionResult> AddSupportUnit([Bind("Id,IncidentId,SupportUnitId")] IncidentSupport incidentSupport)
         {
-            ViewData["SupportUnits"] = new MultiSelectList(_context.Users, "Id", "UnitNumber");
+            ViewData["ABC"] = new SelectList(_context.Users, "Id", "UnitNumber");
 
             await _incidentsService.AddIncidentSupportAsync(incidentSupport);
 
             Incident incident = await _incidentsService.GetIncidentByIdAsync(incidentSupport.IncidentId);
 
-            incident.Support.Add(incidentSupport);
+            incident.Supports.Add(incidentSupport);
 
             return RedirectToAction("Details", new { id = incidentSupport.IncidentId });
-
         }
 
         // INCIDENT NOTES

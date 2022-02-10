@@ -122,9 +122,9 @@ else if (@Model.StatusId == 7)
                      @*Attached Units*@
                      <li>
                      <p>
-                      <b>Attached Units:</b> @foreach(IncidentSupport support in Model.Support)
+                      <b>Attached Units:</b> @foreach(IncidentSupport support in Model.Supports)
                         {
-                            @Html.Raw($"{support.SupportUnit} ")
+                            @($"{support.SupportUnit.UnitNumber} Hello")
                         } 
                      </p>
                      </li>
@@ -352,7 +352,6 @@ else if (@Model.StatusId == 7)
                </h4>
                <form asp-action="AssistUnit" asp-controller="Incidents" method="post">
                   <input type="hidden" asp-for="Id" name="IncidentId" />
-                  <input type="hidden" asp-for="Id" />
                   <input type="hidden" asp-for="Address" />
                   <input type="hidden" asp-for="City" />
                   <input type="hidden" asp-for="State" />
