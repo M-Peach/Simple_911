@@ -13,13 +13,13 @@
     <thead>
         <tr class="table-primary">
             <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Address)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CallTypeId)
@@ -49,13 +49,13 @@
 @foreach (var item in Model) {
         <tr class="table-secondary">
             <td class="text-black">
+                @Html.DisplayFor(modelItem => item.FormattedTime)
+            </td>
+            <td class="text-black">
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td class="text-black">
                 @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td class="text-black">
-                @Html.DisplayFor(modelItem => item.FormattedTime)
             </td>
             <td class="text-black">
                 @Html.DisplayFor(modelItem => item.CallType.Name)

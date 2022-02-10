@@ -43,6 +43,8 @@ else if(User.IsInRole("Dispatcher") || User.IsInRole("Call Taker"))
    </thead>
    <tbody>
       @foreach (var item in Model) {
+      if(item.IsClosed == false)
+      {
       <tr class="table-secondary">
          <td class="text-black">
             @Html.DisplayFor(modelItem => item.FormattedTime)
@@ -107,29 +109,46 @@ else if(User.IsInRole("Dispatcher") || User.IsInRole("Call Taker"))
             <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>
             <a asp-action="Patient" asp-route-id="@item.Id" class="badge bg-light text-black">PT INFO</a>
             <a asp-action="Dispatch" asp-route-id="@item.Id" class="badge bg-light text-black">DISPATCH</a>
+            if(item.Status.Id != 1)
+            {
             <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
+            }
+            else{}
             <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">DELETE</a> 
             }
             else if(User.IsInRole("Call Taker"))
             {
             <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>
             <a asp-action="Patient" asp-route-id="@item.Id" class="badge bg-light text-black">PT INFO</a>
+            if(item.Status.Id != 1)
+            {
             <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
+            }
+            else{}
             <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">DELETE</a> 
             }
             else if (User.IsInRole("Dispatcher"))
             {
             <a asp-action="Edit" asp-route-id="@item.Id" class="badge bg-light text-black">EDIT</a>
             <a asp-action="Dispatch" asp-route-id="@item.Id" class="badge bg-light text-black">DISPATCH</a>
+            if(item.Status.Id != 1)
+            {
             <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
+            }
+            else{}
             <a asp-action="Delete" asp-route-id="@item.Id" class="badge bg-light text-black">DELETE</a>
             }
             else if(User.IsInRole("Ground Unit"))
             {
+            if(item.Status.Id != 1)
+            {
             <a asp-action="Details" asp-route-id="@item.Id" class="badge bg-light text-black">DETAILS</a>
+            }
+            else{}
             }
          </td>
       </tr>
+      }
       }
    </tbody>
 </table>
