@@ -11,7 +11,7 @@ SimpleUser simpleUser = await UserManager.GetUserAsync(User);
          <div class="col-md-12 col">
             <div class="row col-cols-2 mt-5">
                <div style='text-align:right'>
-                  <a asp-action="Index"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Map Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
+                  <a asp-action="Dashboard"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Map Location</button></a>     <a asp-action="" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
                </div>
                <div class="card col m-1 p-2 border-primary mb-3">
                   <div class="card-body">
@@ -96,6 +96,15 @@ SimpleUser simpleUser = await UserManager.GetUserAsync(User);
                            <li>
                               <h6><strong>Address:</strong> <span class="">  @Model.Address, @Model.City</span></h6>
                            </li>
+                          @*Attached Units*@
+                            <li>
+                                <p>
+                                    <b>Attached Units:</b> @foreach(IncidentSupport support in Model.Supports)
+                                    {
+                                        @($"{support.SupportUnit.UnitNumber} - ")
+                                    } 
+                                </p>
+                            </li>
                         </ul>
                      </div>
                   </div>

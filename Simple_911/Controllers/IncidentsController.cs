@@ -325,7 +325,7 @@ namespace Simple_911.Controllers
 
 
 
-            return RedirectToAction(nameof(Dashboard));
+            return RedirectToAction("Details", new { id = incident.Id });
         }
 
         // INCIDENT NOTES
