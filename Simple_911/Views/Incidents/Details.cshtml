@@ -185,7 +185,7 @@ else if (@Model.StatusId == 7)
       </div>
       <div class="card col m-1 p-2 border-primary mb-3" style="max-width: 55rem;">
          <div class="card-body" style="text-align:center">
-            @if(simpleUser.UnitNumber == Model.PrimaryUnit.UnitNumber || simpleUser.UnitNumber == Model.Dispatcher.UnitNumber)
+            @if(simpleUser.UnitNumber == Model.PrimaryUnit.UnitNumber || User.IsInRole("Dispatcher") || User.IsInRole("Manager") || User.IsInRole("Admin"))
             {
             <div class="input-group col m-1 p-2 r-3" style="text-align:center">
                <h4>
