@@ -101,17 +101,18 @@ namespace Simple_911.Data
             try
             {
                 IList<Models.CallType> callTypes = new List<CallType>() {
-                                                    new CallType() { Name = "ASSIST", Description = "Invalid Assist"},
-                                                    new CallType() { Name = "ILL", Description = "Ill Person"},
-                                                    new CallType() { Name = "INJURY", Description = "Injured Person"},
-                                                    new CallType() { Name = "INJ ACC", Description = "Injrury Accident"},
-                                                    new CallType() { Name = "STROKE", Description = "Possible Stroke"},
-                                                    new CallType() { Name = "HEART", Description = "Heart Problems"},
                                                     new CallType() { Name = "ARREST", Description = "Cardiac Arrest"},
-                                                    new CallType() { Name = "OVER", Description = "Possible Overdose"},
-                                                    new CallType() { Name = "CHOKE", Description = "Person Choking"},
+                                                    new CallType() { Name = "ASSIST", Description = "Invalid Assist"},
                                                     new CallType() { Name = "ATTEMPT", Description = "Suicide Attempt / Possible Suicide"},
                                                     new CallType() { Name = "BREATH", Description = "Difficulty Breathing"},
+                                                    new CallType() { Name = "CHOKE", Description = "Person Choking"},
+                                                    new CallType() { Name = "HEART", Description = "Heart Problems"},
+                                                    new CallType() { Name = "ILL", Description = "Ill Person"},
+                                                    new CallType() { Name = "INJ ACC", Description = "Injrury Accident"},
+                                                    new CallType() { Name = "INJURY", Description = "Injured Person"},
+                                                    new CallType() { Name = "OVER", Description = "Possible Overdose"},
+                                                    new CallType() { Name = "STROKE", Description = "Possible Stroke"},
+                                                    new CallType() { Name = "UNC", Description = "Unconscious Person"},
 
                 };
 

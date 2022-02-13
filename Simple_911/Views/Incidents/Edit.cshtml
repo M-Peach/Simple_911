@@ -16,11 +16,7 @@
                   <input type="hidden" asp-for="Id" />
                   <input type="hidden" asp-for="Created" />
                   <input type="hidden" asp-for="IsClosed" />
-                  <input type="hidden" asp-for="PriorityId" />
-                  <input type="hidden" asp-for="CallTypeId" />
                   <input type="hidden" asp-for="StatusId" />
-                  <input type="hidden" asp-for="CallTakerId" />
-                  <input type="hidden" asp-for="DispatcherId" />
                   <input type="hidden" asp-for="PtAge" />
                   <input type="hidden" asp-for="PtSex" />
                   <input type="hidden" asp-for="PtBreath" />
@@ -63,11 +59,6 @@
                 <span asp-validation-for="CallTypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StatusId" class="control-label"></label>
-                <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusId"></select>
-                <span asp-validation-for="StatusId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="CallTakerId" class="control-label"></label>
                 <select asp-for="CallTakerId" class="form-control" asp-items="ViewBag.CallTakerId"></select>
                 <span asp-validation-for="CallTakerId" class="text-danger"></span>
@@ -76,11 +67,6 @@
                 <label asp-for="DispatcherId" class="control-label"></label>
                 <select asp-for="DispatcherId" class="form-control" asp-items="ViewBag.DispatcherId"></select>
                 <span asp-validation-for="DispatcherId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PrimaryUnitId" class="control-label"></label>
-                <select asp-for="PrimaryUnitId" class="form-control" asp-items="ViewBag.PrimaryUnitId"></select>
-                <span asp-validation-for="PrimaryUnitId" class="text-danger"></span>
                 <p></p>
             </div>
             <div class="form-group">
