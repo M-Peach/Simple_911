@@ -262,6 +262,106 @@ namespace Simple_911.Data
                 Console.WriteLine("***********************************");
                 throw;
             }
+
+            defaultUser = new SimpleUser
+            {
+                UnitNumber = "M95",
+                UserName = "M95",
+                FirstName = "MAUMEE",
+                LastName = "MEDIC95",
+            };
+            try
+            {
+                var user = await userManager.FindByNameAsync(defaultUser.UnitNumber);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "Abc&123!");
+                    await userManager.AddToRoleAsync(defaultUser, "Ground Unit");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*************  ERROR  *************");
+                Console.WriteLine("Error Seeding Default Ground Unit.");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("***********************************");
+                throw;
+            }
+
+            defaultUser = new SimpleUser
+            {
+                UnitNumber = "E94",
+                UserName = "E94",
+                FirstName = "MAUMEE",
+                LastName = "ENGINE94",
+            };
+            try
+            {
+                var user = await userManager.FindByNameAsync(defaultUser.UnitNumber);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "Abc&123!");
+                    await userManager.AddToRoleAsync(defaultUser, "Ground Unit");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*************  ERROR  *************");
+                Console.WriteLine("Error Seeding Default Ground Unit.");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("***********************************");
+                throw;
+            }
+
+            defaultUser = new SimpleUser
+            {
+                UnitNumber = "C94",
+                UserName = "C94",
+                FirstName = "MAUMEE",
+                LastName = "CHIEF94",
+            };
+            try
+            {
+                var user = await userManager.FindByNameAsync(defaultUser.UnitNumber);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "Abc&123!");
+                    await userManager.AddToRoleAsync(defaultUser, "Ground Unit");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*************  ERROR  *************");
+                Console.WriteLine("Error Seeding Default Ground Unit.");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("***********************************");
+                throw;
+            }
+
+            defaultUser = new SimpleUser
+            {
+                UnitNumber = "LS7",
+                UserName = "LS7",
+                FirstName = "COUNTY",
+                LastName = "LIFESQUAD7",
+            };
+            try
+            {
+                var user = await userManager.FindByNameAsync(defaultUser.UnitNumber);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "Abc&123!");
+                    await userManager.AddToRoleAsync(defaultUser, "Ground Unit");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*************  ERROR  *************");
+                Console.WriteLine("Error Seeding Default Ground Unit.");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("***********************************");
+                throw;
+            }
         }
     }
 }
