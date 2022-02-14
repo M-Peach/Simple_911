@@ -231,7 +231,7 @@ namespace Simple_911.Controllers
         #endregion
 
         #region GET: EMD
-        [Authorize(Roles = "Admin, Manager, Dispatcher")]
+        [Authorize(Roles = "Admin, Manager, Dispatcher, Call Taker")]
         public async Task<IActionResult> EMD(int id)
         {
             if (id == null)

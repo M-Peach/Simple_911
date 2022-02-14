@@ -290,6 +290,31 @@ namespace Simple_911.Data
 
             defaultUser = new SimpleUser
             {
+                UnitNumber = "M96",
+                UserName = "M96",
+                FirstName = "MAUMEE",
+                LastName = "MEDIC96",
+            };
+            try
+            {
+                var user = await userManager.FindByNameAsync(defaultUser.UnitNumber);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "Abc&123!");
+                    await userManager.AddToRoleAsync(defaultUser, "Ground Unit");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("*************  ERROR  *************");
+                Console.WriteLine("Error Seeding Default Ground Unit.");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("***********************************");
+                throw;
+            }
+
+            defaultUser = new SimpleUser
+            {
                 UnitNumber = "E94",
                 UserName = "E94",
                 FirstName = "MAUMEE",
